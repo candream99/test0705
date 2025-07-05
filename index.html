@@ -8,11 +8,7 @@
   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=0449cd70666bd5232b467275d85f0fd7&libraries=clusterer"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI','Malgun Gothic',sans-serif; }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
     body { display: flex; flex-direction: column; background-color: #f1f5f9; color: #334155; }
 
     .main-wrapper {
@@ -24,13 +20,12 @@
 
     #sidebar {
       width: 350px;
-      max-width: 100%;
       height: 100%;
       background: white;
       display: flex;
       flex-direction: column;
+      border-right: 1px solid #e2e8f0;
       z-index: 10;
-      transition: transform .3s ease;
     }
 
     .sidebar-header {
@@ -125,20 +120,13 @@
       background: #eff6ff;
     }
 
-    #map {
-      flex: 1;
-      height: 100%;
-    }
-
     #detail-panel {
       width: 350px;
-      max-width: 100%;
       background: white;
       padding: 15px;
       overflow-y: auto;
       display: none;
-      flex-shrink: 0;
-      border-left: 1px solid #e2e8f0;
+      border-right: 1px solid #e2e8f0;
     }
 
     #detail-panel.show {
@@ -161,7 +149,11 @@
       cursor: pointer;
     }
 
-    /* 모바일 반응형 */
+    #map {
+      flex: 1;
+      height: 100%;
+    }
+
     @media (max-width: 768px) {
       .main-wrapper {
         flex-direction: column;
@@ -174,15 +166,11 @@
         top: 0;
         left: 0;
         transform: translateY(-100%);
+        z-index: 100;
       }
 
       #sidebar.show {
         transform: translateY(0);
-        z-index: 100;
-      }
-
-      #map {
-        height: 100%;
       }
 
       #detail-panel {
@@ -191,15 +179,20 @@
         position: absolute;
         bottom: 0;
         left: 0;
-        border-left: none;
         border-top: 1px solid #e2e8f0;
+        border-right: none;
         z-index: 100;
+      }
+
+      #map {
+        height: 100%;
       }
     }
   </style>
 </head>
 <body>
   <div class="main-wrapper">
+    <!-- 사이드바 -->
     <div id="sidebar">
       <div class="sidebar-header">
         <h1><i class="fas fa-building"></i> 서울 건물 정보</h1>
@@ -221,8 +214,7 @@
       <div id="building-list"></div>
     </div>
 
-    <div id="map"></div>
-
+    <!-- 상세 정보 패널 (사이드바 오른쪽에 위치) -->
     <div id="detail-panel">
       <div class="detail-header">
         <h2 id="detail-title">건물 정보</h2>
@@ -230,6 +222,9 @@
       </div>
       <div id="detailContent"></div>
     </div>
+
+    <!-- 지도 -->
+    <div id="map"></div>
   </div>
 
   <script>
@@ -249,29 +244,49 @@
     const detailPanel = document.getElementById('detail-panel');
     const detailTitle = document.getElementById('detail-title');
     const detailContent = document.getElementById('detailContent');
+    const searchInput = document.getElementById('searchInput');
+    const filterButtons = document.querySelectorAll('.filter-btn');
 
-    let selectedMarker = null;
+    let markers = [];
+    let currentFilter = 'all';
+    let currentSearchTerm = '';
 
-    buildingData.forEach(b => {
-      const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(b.lat, b.lng),
-        map: map
+    function initMap() {
+      markers.forEach(marker => marker.setMap(null));
+      markers = [];
+      buildingListEl.innerHTML = '';
+
+      const filteredBuildings = buildingData.filter(building => {
+        const matchesFilter = currentFilter === 'all' || building.type === currentFilter;
+        const matchesSearch = building.name.includes(currentSearchTerm) ||
+                              building.address.includes(currentSearchTerm) ||
+                              building.description.includes(currentSearchTerm);
+        return matchesFilter && matchesSearch;
       });
 
-      const info = document.createElement('div');
-      info.className = 'building-item';
-      info.innerHTML = `<strong>${b.name}</strong><br><small>${b.address}</small>`;
-      info.onclick = () => {
-        map.setCenter(new kakao.maps.LatLng(b.lat, b.lng));
-        showDetail(b);
-      };
-      buildingListEl.appendChild(info);
+      filteredBuildings.forEach(b => {
+        const marker = new kakao.maps.Marker({
+          position: new kakao.maps.LatLng(b.lat, b.lng),
+          map: map
+        });
 
-      kakao.maps.event.addListener(marker, 'click', () => {
-        map.setCenter(marker.getPosition());
-        showDetail(b);
+        const info = document.createElement('div');
+        info.className = 'building-item';
+        info.innerHTML = `<strong>${b.name}</strong><br><small>${b.address}</small>`;
+        info.onclick = () => {
+          map.setCenter(new kakao.maps.LatLng(b.lat, b.lng));
+          showDetail(b);
+        };
+        buildingListEl.appendChild(info);
+
+        kakao.maps.event.addListener(marker, 'click', () => {
+          map.setCenter(marker.getPosition());
+          showDetail(b);
+        });
+
+        markers.push(marker);
       });
-    });
+    }
 
     function showDetail(b) {
       detailTitle.textContent = b.name;
@@ -292,6 +307,22 @@
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('show');
     }
+
+    searchInput.addEventListener('input', (e) => {
+      currentSearchTerm = e.target.value;
+      initMap();
+    });
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        currentFilter = button.dataset.filter;
+        initMap();
+      });
+    });
+
+    initMap();
   </script>
 </body>
 </html>
