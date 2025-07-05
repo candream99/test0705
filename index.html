@@ -249,7 +249,15 @@
   const searchInput = document.getElementById('searchInput');
   const filterButtons = document.querySelectorAll('.filter-btn');
 
+  const blueIconUrl = 'https://raw.githubusercontent.com/candream99/test0705/main/images/blue.png';
+  const redIconUrl = 'https://raw.githubusercontent.com/candream99/test0705/main/images/red.png';
+
+  function createMarkerIcon(url) {
+    return new kakao.maps.MarkerImage(url, new kakao.maps.Size(40, 42));
+  }
+
   let markers = [];
+  let selectedMarker = null;
   let currentFilter = 'all';
   let currentSearchTerm = '';
 
@@ -266,7 +274,10 @@
     });
 
     filtered.forEach(b => {
-      const marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(b.lat, b.lng) });
+      const marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(b.lat, b.lng),
+        image: createMarkerIcon(blueIconUrl)
+      });
 
       const item = document.createElement('div');
       item.className = 'building-item';
@@ -275,22 +286,31 @@
         map.setCenter(new kakao.maps.LatLng(b.lat, b.lng));
         showDetail(b);
         highlightBuildingItem(b.id);
+        selectMarker(marker);
       };
 
       buildingListEl.appendChild(item);
-
       b._element = item;
 
       kakao.maps.event.addListener(marker, 'click', () => {
         map.setCenter(marker.getPosition());
         showDetail(b);
         highlightBuildingItem(b.id);
+        selectMarker(marker);
       });
 
       markers.push(marker);
     });
 
     clusterer.addMarkers(markers);
+
+    // 선택 마커 초기화
+    if(selectedMarker) {
+      selectedMarker.setImage(createMarkerIcon(blueIconUrl));
+      selectedMarker = null;
+    }
+
+    buildingData.forEach(b => b._element?.classList.remove('selected'));
   }
 
   function showDetail(b) {
@@ -325,6 +345,14 @@
         }
       }
     });
+  }
+
+  function selectMarker(marker) {
+    if(selectedMarker) {
+      selectedMarker.setImage(createMarkerIcon(blueIconUrl));
+    }
+    marker.setImage(createMarkerIcon(redIconUrl));
+    selectedMarker = marker;
   }
 
   searchInput.addEventListener('input', e => {
