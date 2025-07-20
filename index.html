@@ -110,6 +110,15 @@
       display: flex;
       gap: 5px;
       flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
     }
 
     .filter-btn {
@@ -265,31 +274,17 @@
       padding: 15px;
     }
 
-    .mobile-sidebar-header {
-      padding: 15px;
-      background: #2563eb;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-
-    .mobile-sidebar-header h2 {
-      font-size: 1.2rem;
-      margin: 0;
-    }
-
     .close-mobile-sidebar {
-      background: rgba(255,255,255,0.2);
+      background: #2563eb;
       border: none;
       border-radius: 50%;
       width: 30px;
       height: 30px;
       color: white;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     @media (max-width: 768px) {
@@ -328,19 +323,18 @@
 
     <!-- 모바일 전용 통합 사이드바 -->
     <div class="mobile-sidebar" id="mobileSidebar">
-      <div class="mobile-sidebar-header">
-        <h2>건물 목록</h2>
-        <button class="close-mobile-sidebar" onclick="closeMobileSidebar()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
       <div class="mobile-sidebar-content">
         <div class="filter-section">
-          <button class="filter-btn active" data-filter="all">전체</button>
-          <button class="filter-btn" data-filter="government">정부기관</button>
-          <button class="filter-btn" data-filter="historical">역사</button>
-          <button class="filter-btn" data-filter="religious">종교</button>
-          <button class="filter-btn" data-filter="landmark">랜드마크</button>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">전체</button>
+            <button class="filter-btn" data-filter="government">정부기관</button>
+            <button class="filter-btn" data-filter="historical">역사</button>
+            <button class="filter-btn" data-filter="religious">종교</button>
+            <button class="filter-btn" data-filter="landmark">랜드마크</button>
+          </div>
+          <button class="close-mobile-sidebar" onclick="closeMobileSidebar()">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         <div id="mobile-building-list"></div>
       </div>
@@ -358,11 +352,13 @@
           <input type="text" id="searchInput" placeholder="건물명 검색...">
         </div>
         <div class="filter-section">
-          <button class="filter-btn active" data-filter="all">전체</button>
-          <button class="filter-btn" data-filter="government">정부기관</button>
-          <button class="filter-btn" data-filter="historical">역사</button>
-          <button class="filter-btn" data-filter="religious">종교</button>
-          <button class="filter-btn" data-filter="landmark">랜드마크</button>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">전체</button>
+            <button class="filter-btn" data-filter="government">정부기관</button>
+            <button class="filter-btn" data-filter="historical">역사</button>
+            <button class="filter-btn" data-filter="religious">종교</button>
+            <button class="filter-btn" data-filter="landmark">랜드마크</button>
+          </div>
         </div>
       </div>
       <div id="building-list"></div>
