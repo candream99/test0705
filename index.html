@@ -249,7 +249,6 @@
       transition: transform .3s ease;
       overflow-y: auto;
       display: none;
-      padding-top: 10px;
     }
 
     .mobile-sidebar.show {
@@ -257,13 +256,14 @@
       display: block;
     }
 
+    .mobile-sidebar-content {
+      padding: 15px;
+    }
+
     .mobile-sidebar-header {
       padding: 15px;
       background: #2563eb;
       color: white;
-      position: sticky;
-      top: 0;
-      z-index: 1;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -305,7 +305,7 @@
       }
 
       .search-box input, .mobile-search-box input {
-        font-size: 16px; /* iOS에서 확대 방지 */
+        font-size: 16px;
       }
     }
   </style>
@@ -322,7 +322,7 @@
       </div>
     </div>
 
-    <!-- 모바일 전용 사이드바 (검색 시 표시) -->
+    <!-- 모바일 전용 통합 사이드바 -->
     <div class="mobile-sidebar" id="mobileSidebar">
       <div class="mobile-sidebar-header">
         <h2>건물 목록</h2>
@@ -330,7 +330,7 @@
           <i class="fas fa-times"></i>
         </button>
       </div>
-      <div class="search-section">
+      <div class="mobile-sidebar-content">
         <div class="filter-section">
           <button class="filter-btn active" data-filter="all">전체</button>
           <button class="filter-btn" data-filter="government">정부기관</button>
@@ -338,8 +338,8 @@
           <button class="filter-btn" data-filter="religious">종교</button>
           <button class="filter-btn" data-filter="landmark">랜드마크</button>
         </div>
+        <div id="mobile-building-list"></div>
       </div>
-      <div id="mobile-building-list"></div>
     </div>
 
     <!-- 데스크탑 전용 사이드바 -->
@@ -562,7 +562,6 @@
   function openMobileSidebar() {
     if (window.innerWidth <= 768) {
       mobileSidebar.classList.add('show');
-      // iOS 확대 방지를 위해 입력 폰트 크기 강제 설정
       mobileSearchInput.style.fontSize = '16px';
     }
   }
@@ -602,7 +601,7 @@
     });
   });
 
-  // iOS 확대 방지를 위해 meta 태그 추가 및 입력 폰트 크기 조정
+  // iOS 확대 방지
   document.addEventListener('DOMContentLoaded', function() {
     if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
       const inputs = document.querySelectorAll('input[type="text"], input[type="search"]');
