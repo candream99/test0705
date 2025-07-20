@@ -202,16 +202,19 @@
     }
 
     /* 모바일 전용 스타일 */
-    .mobile-search-bar {
+    .mobile-search-container {
       display: none;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       z-index: 100;
       background: white;
-      padding: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .mobile-search-bar {
+      padding: 10px;
     }
 
     .mobile-search-box {
@@ -235,7 +238,7 @@
     }
 
     .mobile-sidebar {
-      position: absolute;
+      position: fixed;
       top: 60px;
       left: 0;
       width: 100%;
@@ -246,6 +249,7 @@
       transition: transform .3s ease;
       overflow-y: auto;
       display: none;
+      padding-top: 10px;
     }
 
     .mobile-sidebar.show {
@@ -257,7 +261,9 @@
       padding: 15px;
       background: #2563eb;
       color: white;
-      position: relative;
+      position: sticky;
+      top: 0;
+      z-index: 1;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -279,7 +285,7 @@
     }
 
     @media (max-width: 768px) {
-      .mobile-search-bar {
+      .mobile-search-container {
         display: block;
       }
 
@@ -306,11 +312,13 @@
 </head>
 <body>
   <div class="main-wrapper">
-    <!-- 모바일 전용 검색바 -->
-    <div class="mobile-search-bar">
-      <div class="mobile-search-box">
-        <i class="fas fa-search"></i>
-        <input type="text" id="mobileSearchInput" placeholder="건물명 검색..." onclick="openMobileSidebar()">
+    <!-- 모바일 전용 검색바 (고정) -->
+    <div class="mobile-search-container">
+      <div class="mobile-search-bar">
+        <div class="mobile-search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="mobileSearchInput" placeholder="건물명 검색..." onclick="openMobileSidebar()">
+        </div>
       </div>
     </div>
 
