@@ -58,13 +58,17 @@
       background: #2563eb;
       color: white;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .sidebar-header h1 {
-      font-size: 1.5rem;
+      font-size: 1.05rem; /* 70% 크기로 줄임 */
       display: flex;
       align-items: center;
       gap: 10px;
+      font-weight: 600;
     }
 
     .toggle-sidebar {
@@ -78,6 +82,24 @@
       height: 36px;
       color: white;
       cursor: pointer;
+      display: none; /* 데스크탑에서는 숨김 */
+    }
+
+    .hamburger-btn {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .search-section {
@@ -92,18 +114,14 @@
 
     .search-box input {
       width: 100%;
-      padding: 10px 12px 10px 35px;
+      padding: 10px 12px 10px 12px; /* 아이콘 제거로 좌측 패딩 조정 */
       border: 1px solid #e2e8f0;
       border-radius: 8px;
       font-size: 1rem;
     }
 
     .search-box i {
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      transform: translateY(-50%);
-      color: #64748b;
+      display: none; /* 돋보기 아이콘 제거 */
     }
 
     .filter-section {
@@ -222,19 +240,50 @@
       z-index: 100;
       background: white;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 10px 15px;
     }
 
     .mobile-search-bar {
-      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mobile-menu-btn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+
+    .mobile-back-btn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      display: none; /* 처음엔 숨김 */
     }
 
     .mobile-search-box {
       position: relative;
+      flex: 1;
     }
 
     .mobile-search-box input {
       width: 100%;
-      padding: 10px 12px 10px 35px;
+      padding: 10px 12px;
       border: 1px solid #e2e8f0;
       border-radius: 8px;
       font-size: 16px;
@@ -243,11 +292,7 @@
     }
 
     .mobile-search-box i {
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      transform: translateY(-50%);
-      color: #64748b;
+      display: none; /* 돋보기 아이콘 제거 */
     }
 
     .mobile-sidebar {
@@ -287,6 +332,120 @@
       justify-content: center;
     }
 
+    /* 메뉴 패널 스타일 (모바일) */
+    #mobile-menu-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 70%;
+      height: 100%;
+      background: white;
+      z-index: 110;
+      transform: translateX(-100%);
+      transition: transform .3s ease;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+
+    #mobile-menu-panel.show {
+      transform: translateX(0);
+    }
+
+    .menu-dimmer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 109;
+      display: none;
+    }
+
+    .menu-dimmer.show {
+      display: block;
+    }
+
+    .menu-header {
+      padding: 20px 15px;
+      border-bottom: 3px solid #000; /* 굵은 실선 */
+    }
+
+    .menu-header h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .menu-item {
+      padding: 15px;
+      border-bottom: 1px solid #e2e8f0; /* 얇은 실선 */
+      position: relative;
+    }
+
+    .menu-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .menu-item-title {
+      font-size: 1rem;
+      color: #000;
+    }
+
+    .toggle-arrow {
+      font-size: 1.2rem;
+      color: #666;
+      transition: transform 0.3s;
+    }
+
+    .menu-item-content {
+      padding: 10px 0 0;
+      display: none;
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* 데스크탑 메뉴 패널 */
+    #desktop-menu-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 15;
+      display: none;
+    }
+
+    #desktop-menu-panel.show {
+      display: block;
+    }
+
+    .desktop-menu-header {
+      padding: 20px 15px;
+      border-bottom: 3px solid #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .desktop-menu-header h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .close-desktop-menu {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #333;
+    }
+
     @media (max-width: 768px) {
       .mobile-search-container {
         display: block;
@@ -306,6 +465,10 @@
         border-top: 1px solid #e2e8f0;
         z-index: 100;
       }
+      
+      .sidebar-header h1 {
+        font-size: 1.05rem;
+      }
     }
   </style>
 </head>
@@ -314,12 +477,59 @@
     <!-- 모바일 전용 검색바 (고정) -->
     <div class="mobile-search-container">
       <div class="mobile-search-bar">
+        <button class="mobile-menu-btn" onclick="openMobileMenu()">☰</button>
+        <button class="mobile-back-btn" onclick="closeMobileSearch()">←</button>
         <div class="mobile-search-box">
-          <i class="fas fa-search"></i>
-          <input type="text" id="mobileSearchInput" placeholder="건물명 검색..." onclick="openMobileSidebar()">
+          <input type="text" id="mobileSearchInput" placeholder="건물명 검색..." onclick="openMobileSearch()">
         </div>
       </div>
     </div>
+
+    <!-- 모바일 메뉴 패널 -->
+    <div id="mobile-menu-panel">
+      <div class="menu-header">
+        <h2>서울무장애지도</h2>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header" onclick="toggleMenuItem(this)">
+          <span class="menu-item-title">소개</span>
+          <span class="toggle-arrow">V</span>
+        </div>
+        <div class="menu-item-content">
+          0<br>0<br>0
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header" onclick="toggleMenuItem(this)">
+          <span class="menu-item-title">지원</span>
+          <span class="toggle-arrow">V</span>
+        </div>
+        <div class="menu-item-content">
+          0<br>0<br>0
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header" onclick="toggleMenuItem(this)">
+          <span class="menu-item-title">지하철노선도</span>
+          <span class="toggle-arrow">V</span>
+        </div>
+        <div class="menu-item-content">
+          0<br>0<br>0
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header" onclick="toggleMenuItem(this)">
+          <span class="menu-item-title">고객센터</span>
+          <span class="toggle-arrow">V</span>
+        </div>
+        <div class="menu-item-content">
+          0<br>0<br>0
+        </div>
+      </div>
+    </div>
+    
+    <!-- 메뉴 패널 배경 어둡게 -->
+    <div class="menu-dimmer" onclick="closeMobileMenu()"></div>
 
     <!-- 모바일 전용 통합 사이드바 -->
     <div class="mobile-sidebar" id="mobileSidebar">
@@ -343,12 +553,11 @@
     <!-- 데스크탑 전용 사이드바 -->
     <div id="sidebar">
       <div class="sidebar-header">
-        <h1><i class="fas fa-building"></i> 서울 건물 정보</h1>
-        <button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
+        <button class="hamburger-btn" onclick="toggleDesktopMenu()">☰</button>
+        <h1>서울 주요 건물</h1>
       </div>
       <div class="search-section">
         <div class="search-box">
-          <i class="fas fa-search"></i>
           <input type="text" id="searchInput" placeholder="건물명 검색...">
         </div>
         <div class="filter-section">
@@ -362,6 +571,50 @@
         </div>
       </div>
       <div id="building-list"></div>
+    </div>
+    
+    <!-- 데스크탑 메뉴 패널 -->
+    <div id="desktop-menu-panel">
+      <div class="desktop-menu-header">
+        <h2>서울무장애지도</h2>
+        <button class="close-desktop-menu" onclick="closeDesktopMenu()">×</button>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header" onclick="toggleMenuItem(this)">
+          <span class="menu-item-title">소개</span>
+          <span class="toggle-arrow">V</span>
+        </div>
+        <div class="menu-item-content">
+          0<br>0<br>0
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header" onclick="toggleMenuItem(this)">
+          <span class="menu-item-title">지원</span>
+          <span class="toggle-arrow">V</span>
+        </div>
+        <div class="menu-item-content">
+          0<br>0<br>0
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header" onclick="toggleMenuItem(this)">
+          <span class="menu-item-title">지하철노선도</span>
+          <span class="toggle-arrow">V</span>
+        </div>
+        <div class="menu-item-content">
+          0<br>0<br>0
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header" onclick="toggleMenuItem(this)">
+          <span class="menu-item-title">고객센터</span>
+          <span class="toggle-arrow">V</span>
+        </div>
+        <div class="menu-item-content">
+          0<br>0<br>0
+        </div>
+      </div>
     </div>
 
     <div id="detail-panel">
@@ -413,6 +666,11 @@
   const mobileSearchInput = document.getElementById('mobileSearchInput');
   const mobileSidebar = document.getElementById('mobileSidebar');
   const mobileBuildingList = document.getElementById('mobile-building-list');
+  const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+  const mobileBackBtn = document.querySelector('.mobile-back-btn');
+  const mobileMenuPanel = document.getElementById('mobile-menu-panel');
+  const menuDimmer = document.querySelector('.menu-dimmer');
+  const desktopMenuPanel = document.getElementById('desktop-menu-panel');
 
   const blueIconUrl = 'https://raw.githubusercontent.com/candream99/test0705/main/images/blue.png';
   const redIconUrl = 'https://raw.githubusercontent.com/candream99/test0705/main/images/red.png';
@@ -570,6 +828,62 @@
   function closeMobileSidebar() {
     mobileSidebar.classList.remove('show');
     mobileSearchInput.blur();
+  }
+  
+  // 모바일 메뉴 열기
+  function openMobileMenu() {
+    mobileMenuPanel.classList.add('show');
+    menuDimmer.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  
+  // 모바일 메뉴 닫기
+  function closeMobileMenu() {
+    mobileMenuPanel.classList.remove('show');
+    menuDimmer.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+  
+  // 모바일 검색창 열기
+  function openMobileSearch() {
+    mobileMenuBtn.style.display = 'none';
+    mobileBackBtn.style.display = 'flex';
+    openMobileSidebar();
+  }
+  
+  // 모바일 검색창 닫기
+  function closeMobileSearch() {
+    mobileMenuBtn.style.display = 'flex';
+    mobileBackBtn.style.display = 'none';
+    mobileSearchInput.value = '';
+    currentSearchTerm = '';
+    initMap();
+    closeMobileSidebar();
+  }
+  
+  // 데스크탑 메뉴 열기/닫기
+  function toggleDesktopMenu() {
+    desktopMenuPanel.classList.toggle('show');
+  }
+  
+  function closeDesktopMenu() {
+    desktopMenuPanel.classList.remove('show');
+  }
+  
+  // 메뉴 항목 토글 함수
+  function toggleMenuItem(element) {
+    const content = element.nextElementSibling;
+    const arrow = element.querySelector('.toggle-arrow');
+    
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      arrow.textContent = 'V';
+      arrow.style.transform = 'rotate(0deg)';
+    } else {
+      content.style.display = 'block';
+      arrow.textContent = 'Ʌ';
+      arrow.style.transform = 'rotate(0deg)';
+    }
   }
 
   // 스크롤 시 키보드 숨기기
