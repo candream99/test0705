@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>서울 주요 건물 정보 지도</title>
+  <title>서울무장애지도</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=0449cd70666bd5232b467275d85f0fd7&libraries=clusterer"></script>
   <style>
@@ -64,7 +64,7 @@
     }
 
     .sidebar-header h1 {
-      font-size: 1.05rem; /* 70% 크기로 줄임 */
+      font-size: 1.05rem;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -82,7 +82,7 @@
       height: 36px;
       color: white;
       cursor: pointer;
-      display: none; /* 데스크탑에서는 숨김 */
+      display: none;
     }
 
     .hamburger-btn {
@@ -114,14 +114,14 @@
 
     .search-box input {
       width: 100%;
-      padding: 10px 12px 10px 12px; /* 아이콘 제거로 좌측 패딩 조정 */
+      padding: 10px 12px 10px 12px;
       border: 1px solid #e2e8f0;
       border-radius: 8px;
       font-size: 1rem;
     }
 
     .search-box i {
-      display: none; /* 돋보기 아이콘 제거 */
+      display: none;
     }
 
     .filter-section {
@@ -229,6 +229,48 @@
       height: 30px;
       cursor: pointer;
     }
+    
+    /* 접근성 정보 스타일 */
+    .accessibility-info {
+      margin: 15px 0;
+      padding: 15px;
+      background-color: #f8fafc;
+      border-radius: 8px;
+    }
+    
+    .accessibility-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #1e3a8a;
+    }
+    
+    .accessibility-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .accessibility-item i {
+      width: 24px;
+      text-align: center;
+      margin-right: 8px;
+      color: #2563eb;
+    }
+    
+    .accessibility-status {
+      margin-left: auto;
+      font-weight: 600;
+    }
+    
+    .status-yes {
+      color: #10b981;
+    }
+    
+    .status-no {
+      color: #ef4444;
+    }
 
     /* 모바일 전용 스타일 */
     .mobile-search-container {
@@ -273,7 +315,7 @@
       align-items: center;
       justify-content: center;
       color: #333;
-      display: none; /* 처음엔 숨김 */
+      display: none;
     }
 
     .mobile-search-box {
@@ -292,7 +334,7 @@
     }
 
     .mobile-search-box i {
-      display: none; /* 돋보기 아이콘 제거 */
+      display: none;
     }
 
     .mobile-sidebar {
@@ -367,7 +409,7 @@
 
     .menu-header {
       padding: 20px 15px;
-      border-bottom: 3px solid #000; /* 굵은 실선 */
+      border-bottom: 3px solid #000;
     }
 
     .menu-header h2 {
@@ -378,7 +420,7 @@
 
     .menu-item {
       padding: 15px;
-      border-bottom: 1px solid #e2e8f0; /* 얇은 실선 */
+      border-bottom: 1px solid #e2e8f0;
       position: relative;
     }
 
@@ -445,6 +487,25 @@
       cursor: pointer;
       color: #333;
     }
+    
+    /* 현재 위치 버튼 */
+    #current-location-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #333;
+    }
 
     @media (max-width: 768px) {
       .mobile-search-container {
@@ -492,11 +553,12 @@
       </div>
       <div class="menu-item">
         <div class="menu-item-header" onclick="toggleMenuItem(this)">
-          <span class="menu-item-title">소개</span>
+          <span class="menu-item-title">서비스 소개</span>
           <span class="toggle-arrow">V</span>
         </div>
         <div class="menu-item-content">
-          0<br>0<br>0
+          서울무장애지도는 장애인, 노인, 유아동반 가족 등 이동약자를 위한 서울시 주요 시설물의 접근성 정보를 제공합니다. 
+          건물의 무장애 시설 정보를 확인하고 편리하게 이용하세요.
         </div>
       </div>
       <div class="menu-item">
@@ -505,7 +567,9 @@
           <span class="toggle-arrow">V</span>
         </div>
         <div class="menu-item-content">
-          0<br>0<br>0
+          - 서울특별시 장애인복지과: 02-2133-1234<br>
+          - 서울시 장애인 콜센터: 1588-1234<br>
+          - 서울시청 홈페이지: www.seoul.go.kr
         </div>
       </div>
       <div class="menu-item">
@@ -514,7 +578,8 @@
           <span class="toggle-arrow">V</span>
         </div>
         <div class="menu-item-content">
-          0<br>0<br>0
+          서울시 지하철 노선도 정보를 제공합니다. 각 역의 엘리베이터, 휠체어 리프트 등 접근성 정보를 확인하세요.<br>
+          <a href="#" style="color: #2563eb; text-decoration: underline;">지하철 노선도 보기</a>
         </div>
       </div>
       <div class="menu-item">
@@ -523,7 +588,10 @@
           <span class="toggle-arrow">V</span>
         </div>
         <div class="menu-item-content">
-          0<br>0<br>0
+          서울무장애지도에 대한 문의사항이나 오류제보를 접수해주세요.<br><br>
+          <strong>이메일</strong>: barrierfree@seoul.go.kr<br>
+          <strong>전화</strong>: 02-1234-5678<br>
+          <strong>운영시간</strong>: 평일 09:00~18:00 (주말, 공휴일 휴무)
         </div>
       </div>
     </div>
@@ -541,6 +609,7 @@
             <button class="filter-btn" data-filter="historical">역사</button>
             <button class="filter-btn" data-filter="religious">종교</button>
             <button class="filter-btn" data-filter="landmark">랜드마크</button>
+            <button class="filter-btn" data-filter="transport">교통시설</button>
           </div>
           <button class="close-mobile-sidebar" onclick="closeMobileSidebar()">
             <i class="fas fa-times"></i>
@@ -554,7 +623,7 @@
     <div id="sidebar">
       <div class="sidebar-header">
         <button class="hamburger-btn" onclick="toggleDesktopMenu()">☰</button>
-        <h1>서울 주요 건물</h1>
+        <h1>서울무장애지도</h1>
       </div>
       <div class="search-section">
         <div class="search-box">
@@ -567,6 +636,7 @@
             <button class="filter-btn" data-filter="historical">역사</button>
             <button class="filter-btn" data-filter="religious">종교</button>
             <button class="filter-btn" data-filter="landmark">랜드마크</button>
+            <button class="filter-btn" data-filter="transport">교통시설</button>
           </div>
         </div>
       </div>
@@ -581,11 +651,12 @@
       </div>
       <div class="menu-item">
         <div class="menu-item-header" onclick="toggleMenuItem(this)">
-          <span class="menu-item-title">소개</span>
+          <span class="menu-item-title">서비스 소개</span>
           <span class="toggle-arrow">V</span>
         </div>
         <div class="menu-item-content">
-          0<br>0<br>0
+          서울무장애지도는 장애인, 노인, 유아동반 가족 등 이동약자를 위한 서울시 주요 시설물의 접근성 정보를 제공합니다. 
+          건물의 무장애 시설 정보를 확인하고 편리하게 이용하세요.
         </div>
       </div>
       <div class="menu-item">
@@ -594,7 +665,9 @@
           <span class="toggle-arrow">V</span>
         </div>
         <div class="menu-item-content">
-          0<br>0<br>0
+          - 서울특별시 장애인복지과: 02-2133-1234<br>
+          - 서울시 장애인 콜센터: 1588-1234<br>
+          - 서울시청 홈페이지: www.seoul.go.kr
         </div>
       </div>
       <div class="menu-item">
@@ -603,7 +676,8 @@
           <span class="toggle-arrow">V</span>
         </div>
         <div class="menu-item-content">
-          0<br>0<br>0
+          서울시 지하철 노선도 정보를 제공합니다. 각 역의 엘리베이터, 휠체어 리프트 등 접근성 정보를 확인하세요.<br>
+          <a href="#" style="color: #2563eb; text-decoration: underline;">지하철 노선도 보기</a>
         </div>
       </div>
       <div class="menu-item">
@@ -612,7 +686,10 @@
           <span class="toggle-arrow">V</span>
         </div>
         <div class="menu-item-content">
-          0<br>0<br>0
+          서울무장애지도에 대한 문의사항이나 오류제보를 접수해주세요.<br><br>
+          <strong>이메일</strong>: barrierfree@seoul.go.kr<br>
+          <strong>전화</strong>: 02-1234-5678<br>
+          <strong>운영시간</strong>: 평일 09:00~18:00 (주말, 공휴일 휴무)
         </div>
       </div>
     </div>
@@ -626,21 +703,121 @@
     </div>
 
     <div id="map"></div>
+    <div id="current-location-btn" title="현재 위치">
+      <i class="fas fa-location-arrow"></i>
+    </div>
   </div>
 
 <script>
   const buildingData = [
-    { id:1, name:'서울특별시청', type:'government', lat:37.5662952, lng:126.9779451, image:'', description:'서울의 행정 중심지입니다.', year:'1926년', address:'서울 중구 세종대로 110', hours:'09:00~18:00', contact:'02-120' },
-    { id:2, name:'덕수궁', type:'historical', lat:37.565804, lng:126.975146, image:'', description:'조선 후기 궁궐.', year:'15세기', address:'서울 중구 세종대로 99', hours:'09:00~21:00', contact:'02-771-9951' },
-    { id:3, name:'정동제일교회', type:'religious', lat:37.566527, lng:126.973832, image:'', description:'한국 최초의 개신교 교회.', year:'1897년', address:'서울 중구 정동길 46', hours:'09:00~18:00', contact:'02-753-1783' },
-    { id:4, name:'서울역', type:'historical', lat:37.554648, lng:126.972559, image:'', description:'서울 교통의 중심지.', year:'1925년', address:'서울 용산구 한강대로 405', hours:'24시간', contact:'1544-7788' },
+    { 
+      id:1, 
+      name:'서울특별시청', 
+      type:'government', 
+      lat:37.5662952, 
+      lng:126.9779451, 
+      image:'', 
+      description:'서울특별시의 행정 중심지로 시민들을 위한 다양한 서비스를 제공합니다.', 
+      year:'1926년', 
+      address:'서울 중구 세종대로 110', 
+      hours:'09:00~18:00', 
+      contact:'02-120',
+      accessibility: {
+        ramp: true,
+        disabledToilet: true,
+        braille: true,
+        elevator: true,
+        stepFree: false
+      }
+    },
+    { 
+      id:2, 
+      name:'덕수궁', 
+      type:'historical', 
+      lat:37.565804, 
+      lng:126.975146, 
+      image:'', 
+      description:'조선 시대의 궁궐로, 대한제국 시기 황궁으로 사용되었습니다.', 
+      year:'15세기', 
+      address:'서울 중구 세종대로 99', 
+      hours:'09:00~21:00', 
+      contact:'02-771-9951',
+      accessibility: {
+        ramp: true,
+        disabledToilet: true,
+        braille: false,
+        elevator: false,
+        stepFree: true
+      }
+    },
+    { 
+      id:3, 
+      name:'정동제일교회', 
+      type:'religious', 
+      lat:37.566527, 
+      lng:126.973832, 
+      image:'', 
+      description:'한국 최초의 개신교 교회로, 대한제국 고종황제의 친필 현판이 있습니다.', 
+      year:'1897년', 
+      address:'서울 중구 정동길 46', 
+      hours:'09:00~18:00', 
+      contact:'02-753-1783',
+      accessibility: {
+        ramp: true,
+        disabledToilet: false,
+        braille: true,
+        elevator: false,
+        stepFree: true
+      }
+    },
+    { 
+      id:4, 
+      name:'서울역', 
+      type:'transport', 
+      lat:37.554648, 
+      lng:126.972559, 
+      image:'', 
+      description:'서울의 주요 교통 허브로, KTX를 포함한 다양한 열차가 운행됩니다.', 
+      year:'1925년', 
+      address:'서울 용산구 한강대로 405', 
+      hours:'24시간', 
+      contact:'1544-7788',
+      accessibility: {
+        ramp: true,
+        disabledToilet: true,
+        braille: true,
+        elevator: true,
+        stepFree: true
+      }
+    },
+    { 
+      id:5, 
+      name:'국립중앙박물관', 
+      type:'landmark', 
+      lat:37.523984, 
+      lng:126.980355, 
+      image:'', 
+      description:'한국을 대표하는 국립 박물관으로 다양한 문화재를 소장하고 있습니다.', 
+      year:'1945년', 
+      address:'서울 용산구 서빙고로 137', 
+      hours:'10:00~18:00', 
+      contact:'02-2077-9000',
+      accessibility: {
+        ramp: true,
+        disabledToilet: true,
+        braille: true,
+        elevator: true,
+        stepFree: true
+      }
+    }
   ];
 
   const imageMap = {
     '서울특별시청': 'https://github.com/candream99/test0705/blob/main/images/seoulcityhall.jpg?raw=true',
     '덕수궁': 'https://github.com/candream99/test0705/blob/main/images/duksuggong.jpg?raw=true',
     '정동제일교회': 'https://github.com/candream99/test0705/blob/main/images/jeongdongchurch.jpg?raw=true',
-    '서울역': 'https://github.com/candream99/test0705/blob/main/images/seoulstation.jpg?raw=true'
+    '서울역': 'https://github.com/candream99/test0705/blob/main/images/seoulstation.jpg?raw=true',
+    '국립중앙박물관': 'https://github.com/candream99/test0705/blob/main/images/museum.jpg?raw=true'
   };
 
   const map = new kakao.maps.Map(document.getElementById('map'), {
@@ -709,7 +886,7 @@
       desktopItem.innerHTML = `
         <div class="building-text">
           <strong>${b.name}</strong>
-          <span>${b.type === 'government' ? '정부기관' : b.type === 'historical' ? '역사' : b.type === 'religious' ? '종교' : b.type === 'landmark' ? '랜드마크' : ''}</span>
+          <span>${getTypeName(b.type)}</span>
           <small>${b.hours} 운영</small>
           <small>${b.address}</small>
         </div>
@@ -733,7 +910,7 @@
       mobileItem.innerHTML = `
         <div class="building-text">
           <strong>${b.name}</strong>
-          <span>${b.type === 'government' ? '정부기관' : b.type === 'historical' ? '역사' : b.type === 'religious' ? '종교' : b.type === 'landmark' ? '랜드마크' : ''}</span>
+          <span>${getTypeName(b.type)}</span>
           <small>${b.hours} 운영</small>
           <small>${b.address}</small>
         </div>
@@ -774,14 +951,62 @@
     });
   }
 
+  function getTypeName(type) {
+    const typeMap = {
+      'government': '정부기관',
+      'historical': '역사',
+      'religious': '종교',
+      'landmark': '랜드마크',
+      'transport': '교통시설'
+    };
+    return typeMap[type] || '';
+  }
+
   function showDetail(b) {
     detailTitle.textContent = b.name;
+    
+    // 접근성 정보 HTML 생성
+    let accessibilityHTML = '';
+    if (b.accessibility) {
+      accessibilityHTML = `
+        <div class="accessibility-info">
+          <div class="accessibility-title">무장애 시설 정보</div>
+          <div class="accessibility-item">
+            <i class="fas fa-wheelchair"></i>
+            <span>주출입구 경사로</span>
+            <span class="accessibility-status ${b.accessibility.ramp ? 'status-yes' : 'status-no'}">${b.accessibility.ramp ? '있음' : '없음'}</span>
+          </div>
+          <div class="accessibility-item">
+            <i class="fas fa-restroom"></i>
+            <span>장애인 화장실</span>
+            <span class="accessibility-status ${b.accessibility.disabledToilet ? 'status-yes' : 'status-no'}">${b.accessibility.disabledToilet ? '있음' : '없음'}</span>
+          </div>
+          <div class="accessibility-item">
+            <i class="fas fa-braille"></i>
+            <span>점자블록</span>
+            <span class="accessibility-status ${b.accessibility.braille ? 'status-yes' : 'status-no'}">${b.accessibility.braille ? '있음' : '없음'}</span>
+          </div>
+          <div class="accessibility-item">
+            <i class="fas fa-elevator"></i>
+            <span>엘리베이터</span>
+            <span class="accessibility-status ${b.accessibility.elevator ? 'status-yes' : 'status-no'}">${b.accessibility.elevator ? '있음' : '없음'}</span>
+          </div>
+          <div class="accessibility-item">
+            <i class="fas fa-accessible-icon"></i>
+            <span>주출입구 단차</span>
+            <span class="accessibility-status ${b.accessibility.stepFree ? 'status-yes' : 'status-no'}">${b.accessibility.stepFree ? '없음' : '있음'}</span>
+          </div>
+        </div>
+      `;
+    }
+
     detailContent.innerHTML = `
       <img src="${imageMap[b.name] || b.image}" alt="${b.name}" style="width:100%;border-radius:8px;margin-bottom:10px;">
       <p><strong>주소:</strong> ${b.address}</p>
       <p><strong>연락처:</strong> ${b.contact}</p>
       <p><strong>운영 시간:</strong> ${b.hours}</p>
       <p><strong>소개:</strong> ${b.description}</p>
+      ${accessibilityHTML}
     `;
     detailPanel.classList.add('show');
   }
@@ -878,29 +1103,46 @@
     if (content.style.display === 'block') {
       content.style.display = 'none';
       arrow.textContent = 'V';
-      arrow.style.transform = 'rotate(0deg)';
     } else {
       content.style.display = 'block';
       arrow.textContent = 'Ʌ';
-      arrow.style.transform = 'rotate(0deg)';
     }
   }
 
-  // 스크롤 시 키보드 숨기기
-  let touchStartY = 0;
-  mobileSidebar.addEventListener('touchstart', function(e) {
-    touchStartY = e.touches[0].clientY;
-  }, {passive: true});
-
-  mobileSidebar.addEventListener('touchmove', function(e) {
-    const touchY = e.touches[0].clientY;
-    const diff = touchStartY - touchY;
-    
-    if (diff > 10) { // 아래로 스크롤할 때
-      document.activeElement.blur();
+  // 현재 위치 기능
+  document.getElementById('current-location-btn').addEventListener('click', function() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const locPosition = new kakao.maps.LatLng(lat, lng);
+          map.setCenter(locPosition);
+          
+          // 현재 위치 마커 추가
+          const currentMarker = new kakao.maps.Marker({
+            position: locPosition,
+            map: map,
+            image: new kakao.maps.MarkerImage(
+              'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+              new kakao.maps.Size(24, 35))
+          });
+          
+          // 기존 현재 위치 마커가 있다면 제거
+          if (window.currentMarker) {
+            window.currentMarker.setMap(null);
+          }
+          window.currentMarker = currentMarker;
+        },
+        function(error) {
+          alert('현재 위치를 가져올 수 없습니다. 기본 위치로 이동합니다.');
+          map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780));
+        }
+      );
+    } else {
+      alert('이 브라우저에서는 위치 서비스를 지원하지 않습니다.');
     }
-    touchStartY = touchY;
-  }, {passive: true});
+  });
 
   // 데스크탑 이벤트 리스너
   searchInput.addEventListener('input', e => {
