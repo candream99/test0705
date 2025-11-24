@@ -574,26 +574,38 @@
       /* 1F 탭 버튼 스타일 */
       #detailContent .floor-buttons {
         display: flex;
-        gap: 8px;
+        gap: 0;
         padding: 12px 15px;
         background-color: #f3f4f6;
+        border-bottom: 1px solid #e5e7eb; /* 하단 구분선 */
       }
 
       #detailContent .floor-button {
         flex: 1;
         padding: 10px 12px;
         border: none;
-        border-radius: 6px;
-        background-color: #9ca3af; /* 회색 (기본) */
-        color: white;
+        border-radius: 0;
+        background-color: transparent;
+        color: #9ca3af; /* 회색 (기본) */
         font-size: 0.9rem;
         font-weight: 500;
         cursor: pointer;
         transition: all 0.3s ease;
+        position: relative;
       }
 
       #detailContent .floor-button.active {
-        background-color: #ef4444; /* 빨간색 (활성) */
+        color: #000000; /* 검은색 (활성) */
+      }
+
+      #detailContent .floor-button.active::after {
+        content: '';
+        position: absolute;
+        bottom: -12px; /* 버튼 하단에서 border-bottom 위치 */
+        left: 0;
+        right: 0;
+        height: 3px; /* 두꺼운 밑줄 */
+        background-color: #000000; /* 검은색 밑줄 */
       }
 
       #detailContent .floor-tab-content img {
