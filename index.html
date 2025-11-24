@@ -558,12 +558,12 @@
       #detailContent .floor-tab.active {
         background-color: #f3f4f6; /* 흰색/회색 (활성 탭) */
         color: #1f2937;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: none; /* 그림자 효과 제거 */
       }
 
       #detailContent .floor-tab-content {
         background-color: #f3f4f6; /* 활성 탭과 같은 배경 */
-        padding: 15px;
+        padding: 0;
         display: none;
       }
 
@@ -571,11 +571,38 @@
         display: block;
       }
 
+      /* 1F 탭 버튼 스타일 */
+      #detailContent .floor-buttons {
+        display: flex;
+        gap: 8px;
+        padding: 12px 15px;
+        background-color: #f3f4f6;
+      }
+
+      #detailContent .floor-button {
+        flex: 1;
+        padding: 10px 12px;
+        border: none;
+        border-radius: 6px;
+        background-color: #9ca3af; /* 회색 (기본) */
+        color: white;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      #detailContent .floor-button.active {
+        background-color: #ef4444; /* 빨간색 (활성) */
+      }
+
       #detailContent .floor-tab-content img {
         width: 100%;
         height: auto;
         display: block;
-        border-radius: 8px;
+        border-radius: 0;
+        padding: 15px;
+        padding-top: 0;
       }
     }
   </style>
@@ -1056,7 +1083,13 @@
                 <img src="https://github.com/candream99/test0705/blob/main/Kyobo/B1.jpg?raw=true" alt="B1층 안내">
               </div>
               <div class="floor-tab-content active" data-content="1F">
-                <img src="https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true" alt="1층 안내">
+                <div class="floor-buttons">
+                  <button class="floor-button active" data-button="entrance" onclick="switchFloorButton('entrance', this, '1F')">입구</button>
+                  <button class="floor-button" data-button="ramp" onclick="switchFloorButton('ramp', this, '1F')">경사로</button>
+                  <button class="floor-button" data-button="toilet" onclick="switchFloorButton('toilet', this, '1F')">화장실</button>
+                  <button class="floor-button" data-button="elevator" onclick="switchFloorButton('elevator', this, '1F')">엘리베이터</button>
+                </div>
+                <img id="1F-image" src="https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true" alt="1층 안내">
               </div>
             </div>
           `;
@@ -1110,6 +1143,47 @@
       const targetContent = document.querySelector(`.floor-tab-content[data-content="${floor}"]`);
       if (targetContent) {
         targetContent.classList.add('active');
+        
+        // 1F 탭인 경우 기본적으로 '입구' 버튼 활성화
+        if (floor === '1F') {
+          const buttons = targetContent.querySelectorAll('.floor-button');
+          const entranceButton = targetContent.querySelector('.floor-button[data-button="entrance"]');
+          const image = targetContent.querySelector('img');
+          
+          buttons.forEach(btn => btn.classList.remove('active'));
+          if (entranceButton) {
+            entranceButton.classList.add('active');
+            if (image) {
+              image.src = 'https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true';
+            }
+          }
+        }
+      }
+    }
+
+    window.switchFloorButton = function(buttonType, buttonElement, floor) {
+      // 해당 층의 모든 버튼에서 active 클래스 제거
+      const floorContent = document.querySelector(`.floor-tab-content[data-content="${floor}"]`);
+      if (!floorContent) return;
+      
+      const buttons = floorContent.querySelectorAll('.floor-button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      
+      // 클릭한 버튼에 active 클래스 추가
+      buttonElement.classList.add('active');
+      
+      // 이미지 URL 매핑
+      const imageMap = {
+        'entrance': 'https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true',
+        'ramp': 'https://github.com/candream99/test0705/blob/main/Kyobo/ramp.jpg?raw=true',
+        'toilet': 'https://github.com/candream99/test0705/blob/main/Kyobo/toilet.jpg?raw=true',
+        'elevator': 'https://github.com/candream99/test0705/blob/main/Kyobo/elevator1.jpg?raw=true'
+      };
+      
+      // 해당 층의 이미지 업데이트
+      const image = floorContent.querySelector('img');
+      if (image && imageMap[buttonType]) {
+        image.src = imageMap[buttonType];
       }
     }
 
