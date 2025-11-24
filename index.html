@@ -506,6 +506,66 @@
         display: block;
         border-radius: 8px;
       }
+
+      /* 서울특별시청 탭 UI 스타일 */
+      #detailContent .floor-tab-container {
+        background-color: #6b46c1; /* 짙은 보라색 배경 */
+        border: 4mm solid #6b46c1; /* 4mm 두께의 보라색 테두리 */
+        border-radius: 8px;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      #detailContent .floor-tabs {
+        display: flex;
+        background-color: #6b46c1; /* 짙은 보라색 배경 */
+        border-bottom: 2px solid #6b46c1;
+      }
+
+      #detailContent .floor-tab {
+        flex: 1;
+        padding: 12px 16px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 500;
+        background-color: #c4b5fd; /* 옅은 보라색 (비활성 탭) */
+        color: #4c1d95;
+        border: none;
+        transition: all 0.3s ease;
+        border-radius: 0;
+      }
+
+      #detailContent .floor-tab:first-child {
+        border-top-left-radius: 4px;
+      }
+
+      #detailContent .floor-tab:last-child {
+        border-top-right-radius: 4px;
+      }
+
+      #detailContent .floor-tab.active {
+        background-color: #f3f4f6; /* 흰색/회색 (활성 탭) */
+        color: #1f2937;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      #detailContent .floor-tab-content {
+        background-color: #f3f4f6; /* 활성 탭과 같은 배경 */
+        padding: 15px;
+        display: none;
+      }
+
+      #detailContent .floor-tab-content.active {
+        display: block;
+      }
+
+      #detailContent .floor-tab-content img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 8px;
+      }
     }
   </style>
 </head>
@@ -968,10 +1028,28 @@
 
       const isMobile = window.innerWidth <= 768;
       if (isMobile) {
-        // 서울특별시청의 경우 빈 섹션에 이미지 추가
-        const spacerContent = b.name === '서울특별시청' 
-          ? `<img src="https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true" alt="1층 안내" style="width:100%;border-radius:8px;margin:0;">`
-          : '';
+        // 서울특별시청의 경우 탭 UI 추가
+        let spacerContent = '';
+        if (b.name === '서울특별시청') {
+          spacerContent = `
+            <div class="floor-tab-container">
+              <div class="floor-tabs">
+                <button class="floor-tab" data-floor="B2" onclick="switchFloorTab('B2', this)">B2</button>
+                <button class="floor-tab" data-floor="B1" onclick="switchFloorTab('B1', this)">B1</button>
+                <button class="floor-tab active" data-floor="1F" onclick="switchFloorTab('1F', this)">1F</button>
+              </div>
+              <div class="floor-tab-content active" data-content="B2">
+                <img src="https://github.com/candream99/test0705/blob/main/Kyobo/B2.jpg?raw=true" alt="B2층 안내">
+              </div>
+              <div class="floor-tab-content" data-content="B1">
+                <img src="https://github.com/candream99/test0705/blob/main/Kyobo/B1.jpg?raw=true" alt="B1층 안내">
+              </div>
+              <div class="floor-tab-content" data-content="1F">
+                <img src="https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true" alt="1층 안내">
+              </div>
+            </div>
+          `;
+        }
         
         detailContent.innerHTML = `
           <div class="detail-top-section">
@@ -1005,6 +1083,24 @@
 
     window.closeDetail = function() {
       detailPanel.classList.remove('show'); }
+
+    window.switchFloorTab = function(floor, buttonElement) {
+      // 모든 탭과 콘텐츠에서 active 클래스 제거
+      const allTabs = document.querySelectorAll('.floor-tab');
+      const allContents = document.querySelectorAll('.floor-tab-content');
+      
+      allTabs.forEach(tab => tab.classList.remove('active'));
+      allContents.forEach(content => content.classList.remove('active'));
+      
+      // 클릭한 탭에 active 클래스 추가
+      buttonElement.classList.add('active');
+      
+      // 해당 층의 콘텐츠에 active 클래스 추가
+      const targetContent = document.querySelector(`.floor-tab-content[data-content="${floor}"]`);
+      if (targetContent) {
+        targetContent.classList.add('active');
+      }
+    }
 
     function highlightBuildingItem(id) {
       if (window.innerWidth <= 768) return;
