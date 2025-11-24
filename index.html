@@ -440,127 +440,26 @@
       font-size: 18px;
       color: #333; }
 
-    /* --- MOBILE DETAIL PANEL MODIFICATIONS (요청 수정 사항) --- */
     @media (max-width: 768px) {
       .mobile-search-container {
-        display: block;
-        height: 60px; /* 검색 컨테이너 높이 고정 */
-      }
+        display: block; }
 
       #sidebar {
-        display: none; 
-      }
+        display: none; }
 
       #detail-panel {
-        /* 수정: 뷰포트 전체 높이를 차지하며, 상단 검색 컨테이너 아래에 위치 */
         width: 100%;
-        height: calc(100vh - 60px); 
+        height: calc(100% - 60px);
         position: absolute;
-        top: 60px; /* 검색 컨테이너 높이만큼 아래로 */
+        top: 60px;
         left: 0;
         border-left: none;
         border-top: 1px solid #e2e8f0;
-        z-index: 100;
-        
-        /* 추가: 내부 컨텐츠 구조를 위한 flex 설정 */
-        display: flex; 
-        flex-direction: column;
-        padding: 0; /* 내부 padding은 content-wrapper로 이동 */
-      }
-
-      #detail-panel.show {
-         display: flex; /* 모바일 환경에서 flex로 설정 */
-      }
-      
-      /* 상세 컨텐츠 Wrapper (스크롤 영역) */
-      .detail-content-wrapper {
-        flex-grow: 1; /* 남은 공간을 모두 차지 */
-        overflow-y: auto; /* 이 영역만 스크롤 되도록 */
-        padding: 15px;
-        -webkit-overflow-scrolling: touch;
-      }
+        z-index: 99; }
       
       .sidebar-header h1 {
-        font-size: 1.05rem; 
-      }
-      
-      /* 층별 안내 섹션 (하단 고정) */
-      .floor-guide-section {
-        flex-shrink: 0; /* 크기가 줄어들지 않게 고정 */
-        padding: 10px 15px;
-        background-color: #f1f5f9; /* 옅은 회색 배경 */
-        border-top: 1px solid #e2e8f0;
-        box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
-        z-index: 101;
-      }
-      
-      .floor-guide-section h3 {
-        font-size: 0.95rem;
-        margin-bottom: 8px;
-        color: #334155;
-      }
-      
-      .floor-buttons {
-        display: flex;
-        gap: 10px;
-      }
-      
-      .floor-btn, .facility-btn {
-        padding: 8px 15px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        cursor: pointer;
-        background: #fff;
-        color: #333;
-        transition: all 0.2s;
-      }
-      
-      .floor-btn.active, .facility-btn.active {
-        background: #2563eb;
-        color: white;
-        border-color: #2563eb;
-      }
-      
-      /* 층별 시설 안내 컨텐츠 */
-      .floor-detail-content {
-          padding: 15px;
-          border-top: 1px solid #e2e8f0;
-          display: none; /* 기본 숨김 */
-      }
-      
-      .floor-detail-content.show {
-          display: block;
-      }
-      
-      .floor-detail-content img {
-          width: 100%;
-          height: 200px; /* 이미지 높이 3분의 2를 위해 고정 */
-          object-fit: cover;
-          border-radius: 8px;
-          margin-bottom: 10px;
-      }
-      
-      .facility-buttons-group {
-          display: flex;
-          gap: 5px;
-          flex-wrap: wrap;
-          margin-bottom: 15px;
-      }
-      
-      .facility-btn {
-          background: #e0f2ff; /* 옅은 파란색 */
-          color: #1e40af;
-          border: 1px solid #93c5fd;
-      }
-      
-      .facility-btn.active-red {
-          background: #ef4444; /* 빨간색 */
-          color: white;
-          border-color: #b91c1c;
-      }
+        font-size: 1.05rem; }
     }
-    /* --- END OF MOBILE DETAIL PANEL MODIFICATIONS --- */
   </style>
 </head>
 <body>
@@ -718,39 +617,11 @@
     </div>
 
     <div id="detail-panel">
-      <div class="detail-content-wrapper">
-        <div class="detail-header">
-          <h2 id="detail-title">건물 정보</h2>
-          <button class="close-detail" onclick="closeDetail()"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="detailContent"></div>
-        
-        <div id="floor-detail-1F" class="floor-detail-content">
-            <img id="floor-detail-image" src="https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true" alt="1층 안내 이미지">
-            <div class="facility-buttons-group">
-                <button class="facility-btn active-red" data-facility="entrance" onclick="changeFacility('1F', this)">입구</button>
-                <button class="facility-btn" data-facility="ramp" onclick="changeFacility('1F', this)">경사로</button>
-                <button class="facility-btn" data-facility="toilet" onclick="changeFacility('1F', this)">화장실</button>
-                <button class="facility-btn" data-facility="elevator" onclick="changeFacility('1F', this)">엘리베이터</button>
-            </div>
-        </div>
-        <div id="floor-detail-B1" class="floor-detail-content">
-          <p>B1층 상세 정보는 준비 중입니다.</p>
-        </div>
-        <div id="floor-detail-B2" class="floor-detail-content">
-          <p>B2층 상세 정보는 준비 중입니다.</p>
-        </div>
-        
+      <div class="detail-header">
+        <h2 id="detail-title">건물 정보</h2>
+        <button class="close-detail" onclick="closeDetail()"><i class="fas fa-times"></i></button>
       </div>
-
-      <div class="floor-guide-section" id="floor-guide-section">
-        <h3>층별 안내</h3>
-        <div class="floor-buttons">
-          <button class="floor-btn active" data-floor="1F" onclick="showFloorDetail('1F', this)">1F</button>
-          <button class="floor-btn" data-floor="B1" onclick="showFloorDetail('B1', this)">B1</button>
-          <button class="floor-btn" data-floor="B2" onclick="showFloorDetail('B2', this)">B2</button>
-        </div>
-      </div>
+      <div id="detailContent"></div>
     </div>
 
     <div id="map"></div>
@@ -760,17 +631,7 @@
   </div>
 
 <script>
-  // 이미지 URL 맵 (시설별 이미지 경로)
-  const FACILITY_IMAGE_MAP = {
-    '1F': {
-      'entrance': 'https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true',
-      'ramp': 'https://github.com/candream99/test0705/blob/main/Kyobo/ramp.jpg?raw=true',
-      'toilet': 'https://github.com/candream99/test0705/blob/main/Kyobo/toilet.jpg?raw=true',
-      'elevator': 'https://github.com/candream99/test0705/blob/main/Kyobo/elevator1.jpg?raw=true'
-    }
-    // B1, B2에 대한 데이터는 필요에 따라 추가
-  };
-  
+  // --- MODIFIED: Wrap all code in kakao.maps.load ---
   kakao.maps.load(() => {
     const buildingData = [
       { 
@@ -906,12 +767,6 @@
     const mobileMenuPanel = document.getElementById('mobile-menu-panel');
     const menuDimmer = document.querySelector('.menu-dimmer');
     const desktopMenuPanel = document.getElementById('desktop-menu-panel');
-    // 층별 안내 요소
-    const floorGuideSection = document.getElementById('floor-guide-section');
-    const floorDetail1F = document.getElementById('floor-detail-1F');
-    const floorDetailB1 = document.getElementById('floor-detail-B1');
-    const floorDetailB2 = document.getElementById('floor-detail-B2');
-    
     const blueIconUrl = 'https://raw.githubusercontent.com/candream99/test0705/main/images/blue.png';
     const redIconUrl = 'https://raw.githubusercontent.com/candream99/test0705/main/images/red.png';
 
@@ -931,7 +786,6 @@
     let selectedMarker = null;
     let currentFilter = 'all';
     let currentSearchTerm = '';
-    
     function initMap() {
       markers.forEach(marker => marker.setMap(null));
       markers = [];
@@ -992,8 +846,7 @@
           map.setCenter(new kakao.maps.LatLng(b.lat, b.lng));
           showDetail(b);
           selectMarker(marker);
-          closeMobileSidebar(); 
-        };
+          closeMobileSidebar(); };
 
         mobileBuildingList.appendChild(mobileItem);
         b._mobileElement = mobileItem;
@@ -1074,24 +927,11 @@
         <p><strong>소개:</strong> ${b.description}</p>
         ${accessibilityHTML}
       `;
-      
       detailPanel.classList.add('show');
-      
-      // 모바일 환경에서 상세패널이 열릴 때 층별 안내 섹션 보이기
-      if (window.innerWidth <= 768) {
-          floorGuideSection.style.display = 'block';
-          // 기본으로 1F 상세 정보를 표시하도록 초기화 (데스크톱에서는 실행 안됨)
-          showFloorDetail('1F', document.querySelector('.floor-btn[data-floor="1F"]'));
-      }
     }
 
     window.closeDetail = function() {
-      detailPanel.classList.remove('show');
-       if (window.innerWidth <= 768) {
-         // 모바일 환경에서 상세패널이 닫힐 때 층별 안내 섹션 숨기기
-         floorGuideSection.style.display = 'none';
-       }
-    }
+      detailPanel.classList.remove('show'); }
 
     function highlightBuildingItem(id) {
       if (window.innerWidth <= 768) return;
@@ -1200,66 +1040,6 @@
       } else {
         alert('이 브라우저에서는 위치 서비스를 지원하지 않습니다.'); }
     });
-    
-    // --- 층별 안내 기능 구현 (MOBILE ONLY) ---
-    
-    window.showFloorDetail = function(floor, clickedButton) {
-        // 모든 층별 상세 정보 숨기기
-        document.querySelectorAll('.floor-detail-content').forEach(el => el.classList.remove('show'));
-        // 모든 층 버튼의 active 클래스 제거
-        document.querySelectorAll('.floor-btn').forEach(btn => btn.classList.remove('active'));
-        
-        // 현재 층의 상세 정보 표시
-        const floorElement = document.getElementById(`floor-detail-${floor}`);
-        if (floorElement) {
-            floorElement.classList.add('show');
-            // 층 버튼 활성화
-            clickedButton.classList.add('active');
-            
-            // 층이 1F일 경우, 시설 버튼 상태 초기화 및 입구 이미지 로드
-            if (floor === '1F') {
-                const facilityButtons = floorElement.querySelectorAll('.facility-btn');
-                if (facilityButtons.length > 0) {
-                    // 모든 시설 버튼 비활성화 (옅은 파란색)
-                    facilityButtons.forEach(btn => btn.classList.remove('active-red'));
-                    
-                    // '입구' 버튼만 빨간색으로 활성화
-                    const entranceButton = floorElement.querySelector('.facility-btn[data-facility="entrance"]');
-                    if (entranceButton) {
-                        entranceButton.classList.add('active-red');
-                        
-                        // 기본 이미지 (입구) 로드
-                        const floorImage = document.getElementById('floor-detail-image');
-                        if (floorImage) {
-                            floorImage.src = FACILITY_IMAGE_MAP['1F']['entrance'];
-                        }
-                    }
-                }
-            }
-             // 상세 정보 상단으로 스크롤
-             document.querySelector('.detail-content-wrapper').scrollTo(0, 0);
-        }
-    }
-    
-    window.changeFacility = function(floor, clickedButton) {
-        if (floor !== '1F') return; // 현재는 1F만 기능 구현
-        
-        const facility = clickedButton.dataset.facility;
-        const floorElement = document.getElementById(`floor-detail-${floor}`);
-        
-        // 버튼 상태 업데이트
-        floorElement.querySelectorAll('.facility-btn').forEach(btn => {
-            btn.classList.remove('active-red');
-        });
-        clickedButton.classList.add('active-red');
-        
-        // 이미지 업데이트
-        const floorImage = document.getElementById('floor-detail-image');
-        if (floorImage && FACILITY_IMAGE_MAP[floor] && FACILITY_IMAGE_MAP[floor][facility]) {
-            floorImage.src = FACILITY_IMAGE_MAP[floor][facility];
-        }
-    }
-    // --- END OF 층별 안내 기능 구현 ---
 
     searchInput.addEventListener('input', e => {
       currentSearchTerm = e.target.value;
