@@ -575,7 +575,7 @@
       #detailContent .floor-buttons {
         display: flex;
         gap: 0;
-        padding: 12px 15px;
+        padding: 3.6px 4.5px; /* 12px 15px의 30% */
         background-color: #f3f4f6;
         border-bottom: 1px solid #e5e7eb; /* 하단 구분선 */
       }
@@ -592,6 +592,9 @@
         cursor: pointer;
         transition: all 0.3s ease;
         position: relative;
+        white-space: nowrap; /* 한 줄로 표시 */
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       #detailContent .floor-button.active {
@@ -601,7 +604,7 @@
       #detailContent .floor-button.active::after {
         content: '';
         position: absolute;
-        bottom: -12px; /* 버튼 하단에서 border-bottom 위치 */
+        bottom: -3.6px; /* padding의 30%에 맞춤 */
         left: 0;
         right: 0;
         height: 3px; /* 두꺼운 밑줄 */
@@ -613,7 +616,7 @@
         height: auto;
         display: block;
         border-radius: 0;
-        padding: 15px;
+        padding: 4.5px; /* 15px의 30% */
         padding-top: 0;
       }
     }
@@ -1099,7 +1102,7 @@
                   <button class="floor-button active" data-button="entrance" onclick="switchFloorButton('entrance', this, '1F')">입구</button>
                   <button class="floor-button" data-button="ramp" onclick="switchFloorButton('ramp', this, '1F')">경사로</button>
                   <button class="floor-button" data-button="toilet" onclick="switchFloorButton('toilet', this, '1F')">화장실</button>
-                  <button class="floor-button" data-button="elevator" onclick="switchFloorButton('elevator', this, '1F')">엘리베이터</button>
+                  <button class="floor-button" data-button="elevator" onclick="switchFloorButton('elevator', this, '1F')">승강기</button>
                 </div>
                 <img id="1F-image" src="https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true" alt="1층 안내">
               </div>
