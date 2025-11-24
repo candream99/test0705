@@ -459,6 +459,46 @@
       
       .sidebar-header h1 {
         font-size: 1.05rem; }
+
+      /* 모바일 상세패널 레이아웃 */
+      #detailContent .detail-top-section {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      #detailContent .detail-image {
+        width: 20%;
+        flex-shrink: 0;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      #detailContent .detail-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 8px;
+      }
+
+      #detailContent .detail-info {
+        flex: 1;
+      }
+
+      #detailContent .detail-info p {
+        margin: 5px 0;
+        font-size: 0.9rem;
+      }
+
+      #detailContent .detail-divider {
+        border-top: 1px solid #e2e8f0;
+        margin: 15px 0;
+      }
+
+      #detailContent .detail-spacer {
+        height: 160px; /* 약 10줄 정도의 빈칸 */
+      }
     }
   </style>
 </head>
@@ -919,14 +959,35 @@
         `;
       }
 
-      detailContent.innerHTML = `
-        <img src="${imageMap[b.name] || b.image}" alt="${b.name}" style="width:100%;border-radius:8px;margin-bottom:10px;">
-        <p><strong>주소:</strong> ${b.address}</p>
-        <p><strong>연락처:</strong> ${b.contact}</p>
-        <p><strong>운영 시간:</strong> ${b.hours}</p>
-        <p><strong>소개:</strong> ${b.description}</p>
-        ${accessibilityHTML}
-      `;
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        detailContent.innerHTML = `
+          <div class="detail-top-section">
+            <div class="detail-image">
+              <img src="${imageMap[b.name] || b.image}" alt="${b.name}">
+            </div>
+            <div class="detail-info">
+              <p><strong>주소:</strong> ${b.address}</p>
+              <p><strong>연락처:</strong> ${b.contact}</p>
+              <p><strong>운영 시간:</strong> ${b.hours}</p>
+              <p><strong>소개:</strong> ${b.description}</p>
+            </div>
+          </div>
+          <div class="detail-divider"></div>
+          <div class="detail-spacer"></div>
+          <div class="detail-divider"></div>
+          ${accessibilityHTML}
+        `;
+      } else {
+        detailContent.innerHTML = `
+          <img src="${imageMap[b.name] || b.image}" alt="${b.name}" style="width:100%;border-radius:8px;margin-bottom:10px;">
+          <p><strong>주소:</strong> ${b.address}</p>
+          <p><strong>연락처:</strong> ${b.contact}</p>
+          <p><strong>운영 시간:</strong> ${b.hours}</p>
+          <p><strong>소개:</strong> ${b.description}</p>
+          ${accessibilityHTML}
+        `;
+      }
       detailPanel.classList.add('show');
     }
 
