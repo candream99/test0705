@@ -497,7 +497,14 @@
       }
 
       #detailContent .detail-spacer {
-        height: 160px; /* 약 10줄 정도의 빈칸 */
+        min-height: 160px; /* 약 10줄 정도의 빈칸 */
+      }
+
+      #detailContent .detail-spacer img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 8px;
       }
     }
   </style>
@@ -961,6 +968,11 @@
 
       const isMobile = window.innerWidth <= 768;
       if (isMobile) {
+        // 서울특별시청의 경우 빈 섹션에 이미지 추가
+        const spacerContent = b.name === '서울특별시청' 
+          ? `<img src="https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true" alt="1층 안내" style="width:100%;border-radius:8px;margin:0;">`
+          : '';
+        
         detailContent.innerHTML = `
           <div class="detail-top-section">
             <div class="detail-image">
@@ -974,7 +986,7 @@
             </div>
           </div>
           <div class="detail-divider"></div>
-          <div class="detail-spacer"></div>
+          <div class="detail-spacer">${spacerContent}</div>
           <div class="detail-divider"></div>
           ${accessibilityHTML}
         `;
