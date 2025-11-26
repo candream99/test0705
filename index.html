@@ -1,1347 +1,327 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>서울무장애지도</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=0449cd70666bd5232b467275d85f0fd7&libraries=clusterer"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI','Malgun Gothic',sans-serif; }
-    html, body { width: 100%; height: 100%; overflow: hidden; }
-    body { display: flex; flex-direction: column; background-color: #f1f5f9; color: #334155; -webkit-overflow-scrolling: touch; }
-
-    .main-wrapper {
-      flex: 1;
-      display: flex;
-      height: 100vh;
-      overflow: hidden; position: relative;
-    }
-
-    #sidebar {
-      width: 350px;
-      max-width: 100%;
-      height: 100%; background: white;
-      display: flex;
-      flex-direction: column;
-      z-index: 10;
-      transition: transform .3s ease;
-      border-right: 1px solid #e2e8f0; }
-
-    #detail-panel {
-      width: 350px;
-      max-width: 100%;
-      background: white;
-      padding: 15px; overflow-y: auto;
-      display: none;
-      flex-shrink: 0;
-      border-right: 1px solid #e2e8f0; }
-
-    #detail-panel.show {
-      display: block; }
-
-    #map {
-      flex: 1;
-      height: 100%; }
-
-    .sidebar-header {
-      padding: 20px;
-      background: #2563eb;
-      color: white;
-      position: relative; display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .sidebar-header h1 {
-      font-size: 1.05rem; display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-    }
-
-    .toggle-sidebar {
-      position: absolute; top: 20px;
-      right: 20px;
-      background: rgba(255,255,255,0.2);
-      border: none;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      color: white;
-      cursor: pointer;
-      display: none; }
-
-    .hamburger-btn {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%); background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center; }
-
-    .search-section {
-      padding: 15px;
-      border-bottom: 1px solid #e2e8f0; }
-
-    .search-box {
-      position: relative;
-      margin-bottom: 10px; }
-
-    .search-box input {
-      width: 100%;
-      padding: 10px 12px 10px 12px; border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-
-    .search-box i {
-      display: none; }
-
-    .filter-section {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-      align-items: center; justify-content: space-between;
-      padding: 0 10px;
-    }
-
-    .filter-buttons {
-      display: flex;
-      gap: 5px; flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      padding: 6px 12px;
-      border: 1px solid #e2e8f0; border-radius: 30px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      background: #f8fafc;
-    }
-
-    .filter-btn.active {
-      background: #2563eb; color: white;
-    }
-
-    #building-list {
-      overflow-y: auto;
-      flex: 1;
-      padding: 10px 15px; }
-
-    .building-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #fff; border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      padding: 12px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      scroll-margin-top: 10px; }
-
-    .building-item.selected {
-      border: 2px solid #2563eb;
-      background: #eff6ff; }
-
-    .building-text {
-      flex: 1;
-      padding-right: 10px; }
-
-    .building-text strong {
-      display: block;
-      font-size: 1rem;
-      color: #1e3a8a; }
-
-    .building-text span {
-      font-size: 0.8rem;
-      color: #64748b; }
-
-    .building-text small {
-      display: block;
-      color: #64748b;
-      font-size: 0.75rem;
-      margin-top: 4px; }
-
-    .building-thumb {
-      width: 70px;
-      height: 70px;
-      border-radius: 12px;
-      overflow: hidden; flex-shrink: 0;
-    }
-
-    .building-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; }
-
-    .detail-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px; }
-
-    .close-detail {
-      border: none;
-      background: #f1f5f9;
-      border-radius: 50%;
-      width: 30px; height: 30px;
-      cursor: pointer;
-    }
+    <title>교보빌딩 실내 지도 (v4.0 - 무장애 정보 통합)</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
     
-    /* 접근성 정보 스타일 */
-    .accessibility-info {
-      margin: 15px 0; padding: 15px;
-      background-color: #f8fafc;
-      border-radius: 8px;
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    .accessibility-title {
-      font-size: 1.1rem; font-weight: 600;
-      margin-bottom: 10px;
-      color: #1e3a8a;
-    }
-    
-    .accessibility-item {
-      display: flex; align-items: center;
-      margin-bottom: 8px;
-      font-size: 0.9rem;
-    }
-    
-    .accessibility-item i {
-      width: 24px; text-align: center;
-      margin-right: 8px;
-      color: #2563eb;
-    }
-    
-    .accessibility-status {
-      margin-left: auto; font-weight: 600;
-    }
-    
-    .status-yes {
-      color: #10b981; }
-    
-    .status-no {
-      color: #ef4444; }
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+        }
+        
+        /* 층 선택 버튼 스타일 */
+        #floor-picker {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 999; 
+            background-color: white;
+            border-radius: 4px;
+            padding: 5px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: none; 
+        }
+        .floor-button {
+            display: block;
+            padding: 8px 12px;
+            margin: 4px 0;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .floor-button.active {
+            background-color: #4285F4;
+            color: white;
+            border-color: #4285F4;
+        }
 
-    /* 모바일 전용 스타일 */
-    .mobile-search-container {
-      display: none; position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 100;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 10px 15px; }
-
-    /* --- MODIFIED: Mobile search bar styles for new design --- */
-    .mobile-search-bar {
-        display: flex;
-        align-items: center;
-        width: 100%;
-    }
-
-    .mobile-search-box {
-        position: relative;
-        flex: 1;
-    }
-
-    .mobile-menu-btn,
-    .mobile-back-btn {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        font-size: 1.4rem;
-        cursor: pointer;
-        color: #333;
-        height: 100%;
-        width: 45px; /* Clickable area for the button */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2;
-    }
-
-    .mobile-back-btn {
-        display: none;
-        font-weight: bold;
-        font-size: 1.6rem;
-    }
-
-    .mobile-search-box input {
-        width: 100%;
-        padding: 10px 12px 10px 45px; /* Increased left padding for button */
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        font-size: 16px;
-        -webkit-appearance: none;
-        -webkit-border-radius: 8px;
-    }
-    /* --- END OF MODIFICATION --- */
-    
-    .mobile-search-box i {
-      display: none; }
-
-    .mobile-sidebar {
-      position: fixed;
-      top: 60px;
-      left: 0;
-      width: 100%; height: calc(100% - 60px);
-      background: white;
-      z-index: 99;
-      transform: translateY(-100%);
-      transition: transform .3s ease;
-      overflow-y: auto;
-      display: none;
-      -webkit-overflow-scrolling: touch; }
-
-    .mobile-sidebar.show {
-      transform: translateY(0);
-      display: block; }
-
-    .mobile-sidebar-content {
-      padding: 15px; }
-
-    .close-mobile-sidebar {
-      background: #2563eb;
-      border: none;
-      border-radius: 50%;
-      width: 30px; height: 30px;
-      color: white;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center; }
-
-    /* 메뉴 패널 스타일 (모바일) */
-    #mobile-menu-panel {
-      position: fixed; top: 0;
-      left: 0;
-      width: 70%;
-      height: 100%;
-      background: white;
-      z-index: 110;
-      transform: translateX(-100%);
-      transition: transform .3s ease; box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    }
-
-    #mobile-menu-panel.show {
-      transform: translateX(0); }
-
-    .menu-dimmer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.4);
-      z-index: 109;
-      display: none;
-    }
-
-    .menu-dimmer.show {
-      display: block; }
-
-    .menu-header {
-      padding: 20px 15px;
-      border-bottom: 3px solid #000; }
-
-    .menu-header h2 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #000; }
-
-    .menu-item {
-      padding: 15px;
-      border-bottom: 1px solid #e2e8f0;
-      position: relative; }
-
-    .menu-item-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer; }
-
-    .menu-item-title {
-      font-size: 1rem;
-      color: #000; }
-
-    .toggle-arrow {
-      font-size: 1.2rem;
-      color: #666;
-      transition: transform 0.3s; }
-
-    .menu-item-content {
-      padding: 10px 0 0;
-      display: none;
-      color: #666; font-size: 0.9rem;
-      line-height: 1.5;
-    }
-
-    /* --- MODIFIED: 데스크탑 메뉴 패널 --- */
-    #desktop-menu-panel {
-      position: fixed; /* 뷰포트 기준 고정 */
-      top: 0;
-      left: 0;
-      width: 350px; /* 사이드바와 동일한 너비 */
-      height: 100%;
-      background: white;
-      z-index: 15;
-      transform: translateX(-100%); /* 왼쪽 화면 밖으로 이동 */
-      transition: transform 0.3s ease; /* 부드러운 애니메이션 효과 */
-      box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
-
-    #desktop-menu-panel.show {
-      transform: translateX(0); /* 화면 안으로 슬라이드 */
-    }
-
-    .desktop-menu-header {
-      padding: 20px 15px; border-bottom: 3px solid #000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center; }
-
-    .desktop-menu-header h2 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #000; }
-
-    .close-desktop-menu {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer; color: #333;
-    }
-    
-    /* 현재 위치 버튼 */
-    #current-location-btn {
-      position: absolute; right: 10px;
-      top: 10px;
-      width: 40px;
-      height: 40px;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-      cursor: pointer; z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: #333; }
-
-    @media (max-width: 768px) {
-      .mobile-search-container {
-        display: block; }
-
-      #sidebar {
-        display: none; }
-
-      #detail-panel {
-        width: 100%;
-        height: calc(100% - 60px);
-        position: absolute;
-        top: 60px;
-        left: 0;
-        border-left: none;
-        border-top: 1px solid #e2e8f0;
-        z-index: 99; }
-      
-      .sidebar-header h1 {
-        font-size: 1.05rem; }
-
-      /* 모바일 상세패널 레이아웃 */
-      #detailContent .detail-top-section {
-        display: flex;
-        align-items: flex-start;
-        gap: 15px;
-        margin-bottom: 15px;
-      }
-
-      #detailContent .detail-image {
-        width: 26%;
-        flex-shrink: 0;
-        border-radius: 0;
-        overflow: hidden;
-      }
-
-      #detailContent .detail-image img {
-        width: 100%;
-        height: auto;
-        display: block;
-        border-radius: 0;
-      }
-
-      #detailContent .detail-info {
-        flex: 1;
-      }
-
-      #detailContent .detail-info p {
-        margin: 5px 0;
-        font-size: 0.9rem;
-      }
-
-      #detailContent .detail-divider {
-        border-top: 1px solid #e2e8f0;
-        margin: 15px 0;
-      }
-
-      #detailContent .detail-spacer {
-        min-height: 160px; /* 약 10줄 정도의 빈칸 */
-      }
-
-      #detailContent .detail-spacer img {
-        width: 100%;
-        height: auto;
-        display: block;
-        border-radius: 0;
-      }
-
-      /* 서울특별시청 탭 UI 스타일 */
-      #detailContent .floor-tab-container {
-        background-color: #1d4ed8; /* 짙은 파란색 배경 */
-        border: 2mm solid #1d4ed8; /* 2mm 두께의 파란색 테두리 */
-        border-radius: 0;
-        padding: 0;
-        overflow: hidden;
-      }
-
-      #detailContent .floor-tabs {
-        display: flex;
-        background-color: #1d4ed8; /* 짙은 파란색 배경 */
-        gap: 2px; /* 탭 사이 간격 */
-      }
-
-      #detailContent .floor-tab {
-        flex: 1;
-        padding: 12px 16px;
-        text-align: center;
-        cursor: pointer;
-        font-size: 1.045rem; /* 0.95rem의 10% 증가 */
-        font-weight: 500;
-        background-color: #bfdbfe; /* 옅은 파란색 (비활성 탭) */
-        color: #1e3a8a;
-        border: none;
-        transition: all 0.3s ease;
-        border-radius: 0;
-        position: relative;
-      }
-
-      #detailContent .floor-tab:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        right: -1px;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background-color: #1d4ed8; /* 짙은 파란색 구분선 */
-      }
-
-      #detailContent .floor-tab.active {
-        background-color: #f3f4f6; /* 흰색/회색 (활성 탭) */
-        color: #1f2937;
-        box-shadow: none; /* 그림자 효과 제거 */
-      }
-
-      #detailContent .floor-tab-content {
-        background-color: #f3f4f6; /* 활성 탭과 같은 배경 */
-        padding: 0;
-        display: none;
-      }
-
-      #detailContent .floor-tab-content.active {
-        display: block;
-      }
-
-      /* 1F 탭 버튼 스타일 */
-      #detailContent .floor-buttons {
-        display: flex;
-        gap: 0;
-        padding: 3.6px 4.5px; /* 12px 15px의 30% */
-        background-color: #f3f4f6;
-        border-bottom: 1px solid #e5e7eb; /* 하단 구분선 */
-      }
-
-      #detailContent .floor-button {
-        flex: 1;
-        padding: 10px 12px;
-        border: none;
-        border-radius: 0;
-        background-color: transparent;
-        color: #9ca3af; /* 회색 (기본) */
-        font-size: 0.99rem; /* 0.9rem의 10% 증가 */
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        white-space: nowrap; /* 한 줄로 표시 */
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      #detailContent .floor-button.active {
-        color: #000000; /* 검은색 (활성) */
-      }
-
-      #detailContent .floor-button.active::after {
-        content: '';
-        position: absolute;
-        bottom: -3.6px; /* padding의 30%에 맞춤 */
-        left: 0;
-        right: 0;
-        height: 3px; /* 두꺼운 밑줄 */
-        background-color: #000000; /* 검은색 밑줄 */
-      }
-
-      #detailContent .floor-tab-content img {
-        width: 100%;
-        height: auto;
-        display: block;
-        border-radius: 0;
-        padding: 1.125px; /* 이전 대비 50% 감소 */
-        padding-top: 0;
-      }
-    }
-  </style>
+        /* ⭐ 무장애 시설 정보 패널 스타일 (화면 하단 중앙) ⭐ */
+        #accessibility-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            background-color: white;
+            border-radius: 8px; /* 통일성을 위해 8px로 변경 */
+            padding: 15px; /* 내부 패딩 추가 */
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            width: 300px; 
+            display: none; /* 초기에는 숨김 */
+        }
+        
+        /* ⭐ 무장애 시설 정보 내부 스타일 (extract.html 기반) ⭐ */
+        .accessibility-info {
+            margin: 0; 
+            padding: 0;
+            background-color: white; /* 패널 배경색과 통일 */
+            border-radius: 8px;
+        }
+        
+        .accessibility-title {
+            font-size: 1.1rem; 
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1e3a8a;
+        }
+        
+        .accessibility-item {
+            display: flex; 
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .accessibility-item i {
+            width: 24px; 
+            text-align: center;
+            margin-right: 8px;
+            color: #2563eb;
+        }
+        
+        .accessibility-status {
+            margin-left: auto; 
+            font-weight: 600;
+        }
+        
+        .status-yes {
+            color: #10b981; /* 초록색 */
+        }
+        
+        .status-no {
+            color: #ef4444; /* 빨간색 */
+        }
+    </style>
 </head>
 <body>
-  <div class="main-wrapper">
-    <div class="mobile-search-container">
-      <div class="mobile-search-bar">
-        <div class="mobile-search-box">
-          <button class="mobile-menu-btn" onclick="openMobileMenu()">☰</button>
-          <button class="mobile-back-btn" onclick="closeMobileSearch()">&lt;</button>
-          <input type="text" id="mobileSearchInput" placeholder="건물명 검색..." onclick="openMobileSearch()">
-        </div>
-      </div>
-    </div>
-
-    <div id="mobile-menu-panel">
-      <div class="menu-header">
-        <h2>서울무장애지도</h2>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-header" onclick="toggleMenuItem(this)">
-          <span class="menu-item-title">서비스 소개</span>
-          <span class="toggle-arrow">V</span>
-        </div>
-        <div class="menu-item-content">
-          서울무장애지도는 장애인, 노인, 유아동반 가족 등 이동약자를 위한 서울시 주요 시설물의 접근성 정보를 제공합니다. 
-          건물의 무장애 시설 정보를 확인하고 편리하게 이용하세요.
-        </div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-header" onclick="toggleMenuItem(this)">
-          <span class="menu-item-title">지원</span>
-          <span class="toggle-arrow">V</span>
-        </div>
-        <div class="menu-item-content">
-          - 서울특별시 장애인복지과: 02-2133-1234<br>
-          - 서울시 장애인 콜센터: 1588-1234<br>
-          - 서울시청 홈페이지: www.seoul.go.kr
-        </div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-header" onclick="toggleMenuItem(this)">
-          <span class="menu-item-title">지하철노선도</span>
-          <span class="toggle-arrow">V</span>
-        </div>
-        <div class="menu-item-content">
-          서울시 지하철 노선도 정보를 제공합니다. 각 역의 엘리베이터, 휠체어 리프트 등 접근성 정보를 확인하세요.<br>
-          <a href="#" style="color: #2563eb; text-decoration: underline;">지하철 노선도 보기</a>
-        </div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-header" onclick="toggleMenuItem(this)">
-          <span class="menu-item-title">고객센터</span>
-          <span class="toggle-arrow">V</span>
-        </div>
-        <div class="menu-item-content">
-           서울무장애지도에 대한 문의사항이나 오류제보를 접수해주세요.<br><br>
-          <strong>이메일</strong>: barrierfree@seoul.go.kr<br>
-          <strong>전화</strong>: 02-1234-5678<br>
-          <strong>운영시간</strong>: 평일 09:00~18:00 (주말, 공휴일 휴무)
-        </div>
-      </div>
-    </div>
-    
-    <div class="menu-dimmer" onclick="closeMobileMenu()"></div>
-
-    <div class="mobile-sidebar" id="mobileSidebar">
-      <div class="mobile-sidebar-content">
-        <div class="filter-section">
-          <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">전체</button>
-            <button class="filter-btn" data-filter="government">정부기관</button>
-            <button class="filter-btn" data-filter="historical">역사</button>
-            <button class="filter-btn" data-filter="religious">종교</button>
-            <button class="filter-btn" data-filter="landmark">랜드마크</button>
-            <button class="filter-btn" data-filter="transport">교통시설</button>
-          </div>
-          <button class="close-mobile-sidebar" onclick="closeMobileSidebar()">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div id="mobile-building-list"></div>
-      </div>
-    </div>
-
-    <div id="sidebar">
-      <div class="sidebar-header">
-        <button class="hamburger-btn" onclick="toggleDesktopMenu()">☰</button>
-        <h1>서울무장애지도</h1>
-      </div>
-      <div class="search-section">
-        <div class="search-box">
-          <input type="text" id="searchInput" placeholder="건물명 검색...">
-        </div>
-        <div class="filter-section">
-          <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">전체</button>
-            <button class="filter-btn" data-filter="government">정부기관</button>
-            <button class="filter-btn" data-filter="historical">역사</button>
-            <button class="filter-btn" data-filter="religious">종교</button>
-            <button class="filter-btn" data-filter="landmark">랜드마크</button>
-            <button class="filter-btn" data-filter="transport">교통시설</button>
-          </div>
-        </div>
-      </div>
-      <div id="building-list"></div>
-    </div>
-    
-    <div id="desktop-menu-panel">
-      <div class="desktop-menu-header">
-        <h2>서울무장애지도</h2>
-        <button class="close-desktop-menu" onclick="closeDesktopMenu()">×</button>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-header" onclick="toggleMenuItem(this)">
-          <span class="menu-item-title">서비스 소개</span>
-          <span class="toggle-arrow">V</span>
-         </div>
-        <div class="menu-item-content">
-          서울무장애지도는 장애인, 노인, 유아동반 가족 등 이동약자를 위한 서울시 주요 시설물의 접근성 정보를 제공합니다. 건물의 무장애 시설 정보를 확인하고 편리하게 이용하세요.
-        </div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-header" onclick="toggleMenuItem(this)">
-          <span class="menu-item-title">지원</span>
-          <span class="toggle-arrow">V</span>
-        </div>
-        <div class="menu-item-content">
-          - 서울특별시 장애인복지과: 02-2133-1234<br>
-          - 서울시 장애인 콜센터: 1588-1234<br>
-          - 서울시청 홈페이지: www.seoul.go.kr
-        </div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-header" onclick="toggleMenuItem(this)">
-          <span class="menu-item-title">지하철노선도</span>
-          <span class="toggle-arrow">V</span>
-        </div>
-        <div class="menu-item-content">
-          서울시 지하철 노선도 정보를 제공합니다. 각 역의 엘리베이터, 휠체어 리프트 등 접근성 정보를 확인하세요.<br>
-          <a href="#" style="color: #2563eb; text-decoration: underline;">지하철 노선도 보기</a>
-        </div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-header" onclick="toggleMenuItem(this)">
-          <span class="menu-item-title">고객센터</span>
-          <span class="toggle-arrow">V</span>
-        </div>
-        <div class="menu-item-content">
-           서울무장애지도에 대한 문의사항이나 오류제보를 접수해주세요.<br><br>
-          <strong>이메일</strong>: barrierfree@seoul.go.kr<br>
-          <strong>전화</strong>: 02-1234-5678<br>
-          <strong>운영시간</strong>: 평일 09:00~18:00 (주말, 공휴일 휴무)
-        </div>
-      </div>
-    </div>
-
-    <div id="detail-panel">
-      <div class="detail-header">
-        <h2 id="detail-title">건물 정보</h2>
-        <button class="close-detail" onclick="closeDetail()"><i class="fas fa-times"></i></button>
-      </div>
-      <div id="detailContent"></div>
-    </div>
-
     <div id="map"></div>
-    <div id="current-location-btn" title="현재 위치">
-      <i class="fas fa-location-arrow"></i>
-    </div>
-  </div>
+    <div id="floor-picker"></div>
+    <div id="accessibility-panel"></div>
 
-<script>
-  // --- MODIFIED: Wrap all code in kakao.maps.load ---
-  kakao.maps.load(() => {
-    const buildingData = [
-      { 
-        id:1, 
-        name:'서울특별시청', 
-        type:'government', 
-        lat:37.5662952, 
-        lng:126.9779451, 
-        image:'', 
-        description:'서울특별시의 행정 중심지로 시민들을 위한 다양한 서비스를 제공합니다.', 
-        year:'1926년', 
-        address:'서울 중구 세종대로 110', 
-        hours:'09:00~18:00', 
-        contact:'02-120',
-        accessibility: {
-          ramp: true,
-           disabledToilet: true,
-          braille: true,
-          elevator: true,
-          stepFree: false
-        }
-      },
-      { 
-        id:2, 
-        name:'덕수궁', 
-        type:'historical', 
-        lat:37.565804, 
-        lng:126.975146, 
-        image:'', 
-        description:'조선 시대의 궁궐로, 대한제국 시기 황궁으로 사용되었습니다.', 
-        year:'15세기', 
-        address:'서울 중구 세종대로 99', 
-        hours:'09:00~21:00', 
-        contact:'02-771-9951',
-        accessibility: {
-          ramp: true,
-          disabledToilet: true,
-          braille: false,
-          elevator: false,
-          stepFree: true
-        }
-      },
-      { 
-        id:3, 
-        name:'정동제일교회', 
-        type:'religious', 
-        lat:37.566527, 
-        lng:126.973832, 
-        image:'', 
-        description:'한국 최초의 개신교 교회로, 대한제국 고종황제의 친필 현판이 있습니다.', 
-        year:'1897년', 
-        address:'서울 중구 정동길 46', 
-        hours:'09:00~18:00', 
-        contact:'02-753-1783',
-        accessibility: {
-          ramp: true,
-          disabledToilet: false,
-          braille: true,
-          elevator: false,
-          stepFree: true
-        }
-      },
-      { 
-        id:4, 
-        name:'서울역', 
-        type:'transport', 
-        lat:37.554648, 
-        lng:126.972559, 
-         image:'', 
-        description:'서울의 주요 교통 허브로, KTX를 포함한 다양한 열차가 운행됩니다.', 
-        year:'1925년', 
-        address:'서울 용산구 한강대로 405', 
-        hours:'24시간', 
-        contact:'1544-7788',
-        accessibility: {
-          ramp: true,
-          disabledToilet: true,
-          braille: true,
-           elevator: true,
-          stepFree: true
-        }
-      },
-      { 
-        id:5, 
-        name:'국립중앙박물관', 
-        type:'landmark', 
-        lat:37.523984, 
-        lng:126.980355, 
-        image:'', 
-        description:'한국을 대표하는 국립 박물관으로 다양한 문화재를 소장하고 있습니다.', 
-        year:'1945년', 
-        address:'서울 용산구 서빙고로 137', 
-        hours:'10:00~18:00', 
-        contact:'02-2077-9000',
-        accessibility: {
-          ramp: true,
-          disabledToilet: true,
-          braille: true,
-           elevator: true,
-          stepFree: true
-        }
-      }
-    ];
-    const imageMap = {
-      '서울특별시청': 'https://github.com/candream99/test0705/blob/main/images/seoulcityhall.jpg?raw=true',
-      '덕수궁': 'https://github.com/candream99/test0705/blob/main/images/duksuggong.jpg?raw=true',
-      '정동제일교회': 'https://github.com/candream99/test0705/blob/main/images/jeongdongchurch.jpg?raw=true',
-      '서울역': 'https://github.com/candream99/test0705/blob/main/images/seoulstation.jpg?raw=true',
-      '국립중앙박물관': 'https://github.com/candream99/test0705/blob/main/images/museum.jpg?raw=true'
-    };
-    const map = new kakao.maps.Map(document.getElementById('map'), {
-      center: new kakao.maps.LatLng(37.5665, 126.9780),
-      level: 6
-    });
-    const clusterer = new kakao.maps.MarkerClusterer({
-      map: map,
-      averageCenter: true,
-      minLevel: 5
-    });
-    // 데스크탑 요소
-    const buildingListEl = document.getElementById('building-list');
-    const detailPanel = document.getElementById('detail-panel');
-    const detailTitle = document.getElementById('detail-title');
-    const detailContent = document.getElementById('detailContent');
-    const searchInput = document.getElementById('searchInput');
-    const filterButtons = document.querySelectorAll('#sidebar .filter-btn');
-    // 모바일 요소
-    const mobileSearchInput = document.getElementById('mobileSearchInput');
-    const mobileSidebar = document.getElementById('mobileSidebar');
-    const mobileBuildingList = document.getElementById('mobile-building-list');
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const mobileBackBtn = document.querySelector('.mobile-back-btn');
-    const mobileMenuPanel = document.getElementById('mobile-menu-panel');
-    const menuDimmer = document.querySelector('.menu-dimmer');
-    const desktopMenuPanel = document.getElementById('desktop-menu-panel');
-    const blueIconUrl = 'https://raw.githubusercontent.com/candream99/test0705/main/images/blue.png';
-    const redIconUrl = 'https://raw.githubusercontent.com/candream99/test0705/main/images/red.png';
+    <script>
+        let isIndoorModeActive = false;
+        let currentFloorId = null;
+        let floorOverlays = {}; 
 
-    // --- MODIFIED: Dismiss keyboard on building list scroll ---
-    mobileSidebar.addEventListener('scroll', () => {
-        // When the user scrolls the list, blur the input to hide the keyboard
-        if (document.activeElement === mobileSearchInput) {
-            mobileSearchInput.blur();
-        }
-    });
-    // --- END OF MODIFICATION ---
-
-    function createMarkerIcon(url) {
-      return new kakao.maps.MarkerImage(url, new kakao.maps.Size(40, 42)); }
-
-    let markers = [];
-    let selectedMarker = null;
-    let currentFilter = 'all';
-    let currentSearchTerm = '';
-    function initMap() {
-      markers.forEach(marker => marker.setMap(null));
-      markers = [];
-      clusterer.clear();
-      buildingListEl.innerHTML = '';
-      mobileBuildingList.innerHTML = '';
-
-      const filtered = buildingData.filter(b => {
-        const matchesType = currentFilter === 'all' || b.type === currentFilter;
-        const matchesSearch = b.name.includes(currentSearchTerm) || b.address.includes(currentSearchTerm) || b.description.includes(currentSearchTerm);
-        return matchesType && matchesSearch;
-      });
-      filtered.forEach(b => {
-        const marker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(b.lat, b.lng),
-          image: createMarkerIcon(blueIconUrl)
-        });
-
-        // 데스크탑 건물 목록 아이템 생성
-        const desktopItem = document.createElement('div');
-        desktopItem.className = 'building-item';
-        desktopItem.innerHTML = `
-           <div class="building-text">
-            <strong>${b.name}</strong>
-            <span>${getTypeName(b.type)}</span>
-            <small>${b.hours} 운영</small>
-            <small>${b.address}</small>
-          </div>
-          <div class="building-thumb">
-            <img src="${imageMap[b.name] || b.image}" alt="${b.name}">
-          </div>
-         `;
-        desktopItem.onclick = () => {
-          map.setCenter(new kakao.maps.LatLng(b.lat, b.lng));
-          showDetail(b);
-          highlightBuildingItem(b.id);
-          selectMarker(marker);
+        const FLOOR_DATA = {
+            "B2": {
+                imageUrl: 'B2_floorplan.png', 
+                imageBounds: { north: 37.571400, south: 37.570450, west: 126.977500, east: 126.978200 },
+                name: "B2"
+            },
+            "B1": {
+                imageUrl: 'B1_floorplan.png', 
+                imageBounds: { north: 37.571385, south: 37.570480, west: 126.977550, east: 126.978180 },
+                name: "B1"
+            },
+            "1F": {
+                imageUrl: '1F_2.png',
+                imageBounds: { north: 37.571375, south: 37.570502, west: 126.977571, east: 126.978179 },
+                name: "1F"
+            }
         };
 
-        buildingListEl.appendChild(desktopItem);
-        b._desktopElement = desktopItem;
+        const BUILDING_PERIMETER = [
+            { lat: 37.571348, lng: 126.977638 },
+            { lat: 37.571352, lng: 126.978030 },
+            { lat: 37.571259, lng: 126.978032 },
+            { lat: 37.571259, lng: 126.978156 },
+            { lat: 37.570850, lng: 126.978161 },
+            { lat: 37.570849, lng: 126.978041 },
+            { lat: 37.570532, lng: 126.978044 },
+            { lat: 37.570531, lng: 126.977657 }
+        ];
 
-        // 모바일 건물 목록 아이템 생성
-        const mobileItem = document.createElement('div');
-        mobileItem.className = 'building-item';
-        mobileItem.innerHTML = `
-          <div class="building-text">
-            <strong>${b.name}</strong>
-            <span>${getTypeName(b.type)}</span>
-            <small>${b.hours} 운영</small>
-            <small>${b.address}</small>
-          </div>
-          <div class="building-thumb">
-            <img src="${imageMap[b.name] || b.image}" alt="${b.name}">
-          </div>
-        `;
-        mobileItem.onclick = () => {
-          map.setCenter(new kakao.maps.LatLng(b.lat, b.lng));
-          showDetail(b);
-          selectMarker(marker);
-          closeMobileSidebar(); };
-
-        mobileBuildingList.appendChild(mobileItem);
-        b._mobileElement = mobileItem;
-
-        kakao.maps.event.addListener(marker, 'click', () => {
-          map.setCenter(marker.getPosition());
-          showDetail(b);
-          highlightBuildingItem(b.id);
-          selectMarker(marker);
-        });
-        markers.push(marker);
-      });
-
-      clusterer.addMarkers(markers);
-
-      if(selectedMarker) {
-        selectedMarker.setImage(createMarkerIcon(blueIconUrl));
-        selectedMarker = null; }
-
-      buildingData.forEach(b => {
-        if (b._desktopElement) b._desktopElement.classList.remove('selected');
-        if (b._mobileElement) b._mobileElement.classList.remove('selected');
-      });
-    }
-
-    function getTypeName(type) {
-      const typeMap = {
-        'government': '정부기관',
-        'historical': '역사',
-        'religious': '종교',
-        'landmark': '랜드마크',
-        'transport': '교통시설'
-      };
-      return typeMap[type] || '';
-    }
-
-    function showDetail(b) {
-      detailTitle.textContent = b.name;
-      let accessibilityHTML = '';
-      if (b.accessibility) {
-        accessibilityHTML = `
-          <div class="accessibility-info">
-            <div class="accessibility-title">무장애 시설 정보</div>
-            <div class="accessibility-item">
-              <i class="fas fa-wheelchair"></i>
-              <span>주출입구 경사로</span>
-              <span class="accessibility-status ${b.accessibility.ramp ? 'status-yes' : 'status-no'}">${b.accessibility.ramp ? '있음' : '없음'}</span>
-            </div>
-            <div class="accessibility-item">
-              <i class="fas fa-restroom"></i>
-              <span>장애인 화장실</span>
-              <span class="accessibility-status ${b.accessibility.disabledToilet ? 'status-yes' : 'status-no'}">${b.accessibility.disabledToilet ? '있음' : '없음'}</span>
-            </div>
-            <div class="accessibility-item">
-              <i class="fas fa-braille"></i>
-              <span>점자블록</span>
-              <span class="accessibility-status ${b.accessibility.braille ? 'status-yes' : 'status-no'}">${b.accessibility.braille ? '있음' : '없음'}</span>
-            </div>
-            <div class="accessibility-item">
-              <i class="fas fa-elevator"></i>
-              <span>엘리베이터</span>
-              <span class="accessibility-status ${b.accessibility.elevator ? 'status-yes' : 'status-no'}">${b.accessibility.elevator ? '있음' : '없음'}</span>
-            </div>
-            <div class="accessibility-item">
-              <i class="fas fa-accessible-icon"></i>
-              <span>주출입구 단차</span>
-              <span class="accessibility-status ${b.accessibility.stepFree ? 'status-yes' : 'status-no'}">${b.accessibility.stepFree ? '없음' : '있음'}</span>
-            </div>
-          </div>
-        `;
-      }
-
-      const isMobile = window.innerWidth <= 768;
-      if (isMobile) {
-        // 서울특별시청의 경우 탭 UI 추가
-        let spacerContent = '';
-        if (b.name === '서울특별시청') {
-          spacerContent = `
-            <div class="floor-tab-container">
-              <div class="floor-tabs">
-                <button class="floor-tab" data-floor="B2" onclick="switchFloorTab('B2', this)">B2</button>
-                <button class="floor-tab" data-floor="B1" onclick="switchFloorTab('B1', this)">B1</button>
-                <button class="floor-tab active" data-floor="1F" onclick="switchFloorTab('1F', this)">1F</button>
-              </div>
-              <div class="floor-tab-content" data-content="B2">
-                <img src="https://github.com/candream99/test0705/blob/main/Kyobo/B1.jpg?raw=true" alt="B2층 안내">
-              </div>
-              <div class="floor-tab-content" data-content="B1">
-                <img src="https://github.com/candream99/test0705/blob/main/Kyobo/B1.jpg?raw=true" alt="B1층 안내">
-              </div>
-              <div class="floor-tab-content active" data-content="1F">
-                <div class="floor-buttons">
-                  <button class="floor-button active" data-button="entrance" onclick="switchFloorButton('entrance', this, '1F')">입구</button>
-                  <button class="floor-button" data-button="ramp" onclick="switchFloorButton('ramp', this, '1F')">경사로</button>
-                  <button class="floor-button" data-button="toilet" onclick="switchFloorButton('toilet', this, '1F')">화장실</button>
-                  <button class="floor-button" data-button="elevator" onclick="switchFloorButton('elevator', this, '1F')">승강기</button>
-                </div>
-                <img id="1F-image" src="https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true" alt="1층 안내">
-              </div>
-            </div>
-          `;
-        }
+        const CLEAN_MAP_STYLE = [
+            { featureType: "all", elementType: "labels", stylers: [{ visibility: "off" }] },
+            { featureType: "all", elementType: "geometry", stylers: [{ saturation: -100 }] }
+        ];
         
-        detailContent.innerHTML = `
-          <div class="detail-top-section">
-            <div class="detail-image">
-              <img src="${imageMap[b.name] || b.image}" alt="${b.name}">
-            </div>
-            <div class="detail-info">
-              <p><strong>주소:</strong> ${b.address}</p>
-              <p><strong>연락처:</strong> ${b.contact}</p>
-              <p><strong>운영 시간:</strong> ${b.hours}</p>
-            </div>
-          </div>
-          <div class="detail-divider"></div>
-          <div class="detail-spacer">${spacerContent}</div>
-          <div class="detail-divider"></div>
-          ${accessibilityHTML}
-        `;
-      } else {
-        detailContent.innerHTML = `
-          <img src="${imageMap[b.name] || b.image}" alt="${b.name}" style="width:100%;border-radius:0;margin-bottom:10px;">
-          <p><strong>주소:</strong> ${b.address}</p>
-          <p><strong>연락처:</strong> ${b.contact}</p>
-          <p><strong>운영 시간:</strong> ${b.hours}</p>
-          ${accessibilityHTML}
-        `;
-      }
-      detailPanel.classList.add('show');
-    }
+        // ⭐ 무장애 시설 정보 (임시 데이터) ⭐
+        const ACCESSIBILITY_DATA = {
+            ramp: true,          // 주출입구 경사로
+            disabledToilet: true, // 장애인 화장실
+            braille: true,       // 점자블록
+            elevator: true,      // 엘리베이터
+            stepFree: false      // 주출입구 단차 (false: 단차 있음 / true: 단차 없음)
+        };
 
-    window.closeDetail = function() {
-      detailPanel.classList.remove('show'); }
-
-    window.switchFloorTab = function(floor, buttonElement) {
-      // 모든 탭과 콘텐츠에서 active 클래스 제거
-      const allTabs = document.querySelectorAll('.floor-tab');
-      const allContents = document.querySelectorAll('.floor-tab-content');
-      
-      allTabs.forEach(tab => tab.classList.remove('active'));
-      allContents.forEach(content => content.classList.remove('active'));
-      
-      // 클릭한 탭에 active 클래스 추가
-      buttonElement.classList.add('active');
-      
-      // 해당 층의 콘텐츠에 active 클래스 추가
-      const targetContent = document.querySelector(`.floor-tab-content[data-content="${floor}"]`);
-      if (targetContent) {
-        targetContent.classList.add('active');
-        
-        // 1F 탭인 경우 기본적으로 '입구' 버튼 활성화
-        if (floor === '1F') {
-          const buttons = targetContent.querySelectorAll('.floor-button');
-          const entranceButton = targetContent.querySelector('.floor-button[data-button="entrance"]');
-          const image = targetContent.querySelector('img');
-          
-          buttons.forEach(btn => btn.classList.remove('active'));
-          if (entranceButton) {
-            entranceButton.classList.add('active');
-            if (image) {
-              image.src = 'https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true';
-            }
-          }
-        }
-      }
-    }
-
-    window.switchFloorButton = function(buttonType, buttonElement, floor) {
-      // 해당 층의 모든 버튼에서 active 클래스 제거
-      const floorContent = document.querySelector(`.floor-tab-content[data-content="${floor}"]`);
-      if (!floorContent) return;
-      
-      const buttons = floorContent.querySelectorAll('.floor-button');
-      buttons.forEach(btn => btn.classList.remove('active'));
-      
-      // 클릭한 버튼에 active 클래스 추가
-      buttonElement.classList.add('active');
-      
-      // 이미지 URL 매핑
-      const imageMap = {
-        'entrance': 'https://github.com/candream99/test0705/blob/main/Kyobo/1F.jpg?raw=true',
-        'ramp': 'https://github.com/candream99/test0705/blob/main/Kyobo/ramp.jpg?raw=true',
-        'toilet': 'https://github.com/candream99/test0705/blob/main/Kyobo/toilet.jpg?raw=true',
-        'elevator': 'https://github.com/candream99/test0705/blob/main/Kyobo/elevator1.jpg?raw=true'
-      };
-      
-      // 해당 층의 이미지 업데이트
-      const image = floorContent.querySelector('img');
-      if (image && imageMap[buttonType]) {
-        image.src = imageMap[buttonType];
-      }
-    }
-
-    function highlightBuildingItem(id) {
-      if (window.innerWidth <= 768) return;
-      buildingData.forEach(b => {
-        if (b._desktopElement) {
-          if (b.id === id) {
-            b._desktopElement.classList.add('selected');
-            b._desktopElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          } else {
-            b._desktopElement.classList.remove('selected');
-          }
-        }
-       });
-    }
-
-    function selectMarker(marker) {
-      if(selectedMarker) {
-        selectedMarker.setImage(createMarkerIcon(blueIconUrl)); }
-      marker.setImage(createMarkerIcon(redIconUrl));
-      selectedMarker = marker; }
-
-    function openMobileSidebar() {
-      if (window.innerWidth <= 768) {
-        mobileSidebar.classList.add('show');
-        mobileSearchInput.style.fontSize = '16px';
-        mobileSearchInput.focus();
-      }
-    }
-
-    window.closeMobileSidebar = function() {
-      mobileSidebar.classList.remove('show');
-      mobileSearchInput.blur();
-    }
-    
-    window.openMobileMenu = function() {
-      mobileMenuPanel.classList.add('show');
-      menuDimmer.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    }
-    
-    window.closeMobileMenu = function() {
-      mobileMenuPanel.classList.remove('show');
-      menuDimmer.classList.remove('show');
-      document.body.style.overflow = '';
-    }
-    
-    window.openMobileSearch = function() {
-      mobileMenuBtn.style.display = 'none';
-      mobileBackBtn.style.display = 'flex';
-      openMobileSidebar();
-    }
-    
-    window.closeMobileSearch = function() {
-      mobileMenuBtn.style.display = 'flex';
-      mobileBackBtn.style.display = 'none';
-      mobileSearchInput.value = '';
-      currentSearchTerm = '';
-      initMap();
-      closeMobileSidebar(); }
-    
-    window.toggleDesktopMenu = function() {
-      desktopMenuPanel.classList.toggle('show'); }
-    
-    window.closeDesktopMenu = function() {
-      desktopMenuPanel.classList.remove('show'); }
-    
-    window.toggleMenuItem = function(element) {
-      const content = element.nextElementSibling;
-      const arrow = element.querySelector('.toggle-arrow');
-      
-      if (content.style.display === 'block') {
-        content.style.display = 'none';
-        arrow.textContent = 'V';
-      } else {
-        content.style.display = 'block';
-        arrow.textContent = 'Ʌ'; }
-    }
-
-    document.getElementById('current-location-btn').addEventListener('click', function() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          function(position) {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            const locPosition = new kakao.maps.LatLng(lat, lng);
-            map.setCenter(locPosition);
+        /**
+         * 무장애 시설 정보 HTML을 생성합니다.
+         * 실제 데이터는 ACCESSIBILITY_DATA 상수를 참조합니다.
+         */
+        function generateAccessibilityHTML(data) {
+            const getStatus = (key) => ({
+                text: data[key] ? '있음' : '없음',
+                class: data[key] ? 'status-yes' : 'status-no'
+            });
+            const stepFreeStatus = getStatus('stepFree');
             
-            const currentMarker = new kakao.maps.Marker({
-              position: locPosition,
-              map: map,
-              image: new kakao.maps.MarkerImage(
-                'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-                 new kakao.maps.Size(24, 35))
+            // 주출입구 단차는 true(단차 없음), false(단차 있음)이므로 텍스트를 반전
+            const stepFreeText = data.stepFree ? '없음' : '있음';
+            const stepFreeClass = data.stepFree ? 'status-yes' : 'status-no';
+
+            return `
+                <div class="accessibility-info">
+                    <div class="accessibility-title">무장애 시설 정보</div>
+                    <div class="accessibility-item">
+                        <i class="fas fa-wheelchair"></i>
+                        <span>주출입구 경사로</span>
+                        <span class="accessibility-status ${getStatus('ramp').class}">${getStatus('ramp').text}</span>
+                    </div>
+                    <div class="accessibility-item">
+                        <i class="fas fa-restroom"></i>
+                        <span>장애인 화장실</span>
+                        <span class="accessibility-status ${getStatus('disabledToilet').class}">${getStatus('disabledToilet').text}</span>
+                    </div>
+                    <div class="accessibility-item">
+                        <i class="fas fa-braille"></i>
+                        <span>점자블록</span>
+                        <span class="accessibility-status ${getStatus('braille').class}">${getStatus('braille').text}</span>
+                    </div>
+                    <div class="accessibility-item">
+                        <i class="fas fa-elevator"></i>
+                        <span>엘리베이터</span>
+                        <span class="accessibility-status ${getStatus('elevator').class}">${getStatus('elevator').text}</span>
+                    </div>
+                    <div class="accessibility-item">
+                        <i class="fas fa-accessible-icon"></i>
+                        <span>주출입구 단차</span>
+                        <span class="accessibility-status ${stepFreeClass}">${stepFreeText}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function switchFloor(newFloorId, map) {
+            if (currentFloorId === newFloorId && currentFloorId !== null) return;
+
+            if (floorOverlays[currentFloorId]) {
+                floorOverlays[currentFloorId].setMap(null);
+            }
+            
+            currentFloorId = newFloorId;
+            const floor = FLOOR_DATA[newFloorId];
+
+            if (floorOverlays[newFloorId]) {
+                floorOverlays[newFloorId].setMap(map);
+            }
+
+            document.querySelectorAll('.floor-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const activeBtn = document.getElementById(`btn-${newFloorId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+        }
+
+        function initMap() {
+            const initialBounds = FLOOR_DATA['1F'].imageBounds;
+            const kyoboCenter = {  
+                lat: (initialBounds.north + initialBounds.south) / 2,
+                lng: (initialBounds.east + initialBounds.west) / 2
+            };
+
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 18, center: kyoboCenter, mapTypeId: 'roadmap' 
+            });
+
+            const cleanMapType = new google.maps.StyledMapType(CLEAN_MAP_STYLE, { name: "Clean Map" });
+            map.mapTypes.set('clean_map', cleanMapType);
+            
+            const buildingPolygon = new google.maps.Polygon({
+                paths: BUILDING_PERIMETER,
+                strokeColor: '#FF0000', strokeOpacity: 1.0, strokeWeight: 2,
+                fillColor: '#FF0000', fillOpacity: 0.0, 
+                zIndex: 10, map: map
+            });
+
+            const floorPicker = document.getElementById('floor-picker');
+            // ⭐ 무장애 시설 정보 패널 요소 참조 및 내용 삽입 ⭐
+            const accessibilityPanel = document.getElementById('accessibility-panel');
+            accessibilityPanel.innerHTML = generateAccessibilityHTML(ACCESSIBILITY_DATA);
+
+            Object.keys(FLOOR_DATA).reverse().forEach(floorId => { 
+                const btn = document.createElement('button');
+                btn.textContent = FLOOR_DATA[floorId].name;
+                btn.id = `btn-${floorId}`;
+                btn.classList.add('floor-button');
+                btn.onclick = () => { switchFloor(floorId, map); };
+                floorPicker.appendChild(btn);
+            });
+
+            // 마우스 오버/아웃 이벤트
+            google.maps.event.addListener(buildingPolygon, 'mouseover', function() {
+                if (!isIndoorModeActive) { buildingPolygon.setOptions({ fillOpacity: 0.2 }); }
+            });
+            google.maps.event.addListener(buildingPolygon, 'mouseout', function() {
+                if (!isIndoorModeActive) { buildingPolygon.setOptions({ fillOpacity: 0.0 }); }
+            });
+
+            // 클릭 이벤트 (실내 모드 토글)
+            google.maps.event.addListener(buildingPolygon, 'click', function() {
+                if (!isIndoorModeActive) {
+                    // 실내 모드 진입
+                    isIndoorModeActive = true;
+                    currentFloorId = null; 
+                    
+                    map.setMapTypeId('clean_map'); 
+                    
+                    // ⭐ 층 선택기와 무장애 시설 정보 패널 표시 ⭐
+                    floorPicker.style.display = 'block';
+                    accessibilityPanel.style.display = 'block';
+                    
+                    switchFloor('1F', map); 
+                    
+                    buildingPolygon.setOptions({ fillOpacity: 0.0, strokeWeight: 4 });
+                } else {
+                    // 실내 모드 종료
+                    isIndoorModeActive = false;
+
+                    if (floorOverlays[currentFloorId]) {
+                        floorOverlays[currentFloorId].setMap(null);
+                    }
+                    
+                    currentFloorId = null; 
+                    
+                    // ⭐ 층 선택기와 무장애 시설 정보 패널 숨김 ⭐
+                    floorPicker.style.display = 'none';
+                    accessibilityPanel.style.display = 'none';
+
+                    map.setMapTypeId('roadmap');
+                    buildingPolygon.setOptions({ strokeWeight: 2, fillOpacity: 0.0 });
+                }
             });
             
-            if (window.currentMarker) {
-              window.currentMarker.setMap(null);
-            }
-            window.currentMarker = currentMarker;
-          },
-          function(error) {
-            alert('현재 위치를 가져올 수 없습니다. 기본 위치로 이동합니다.');
-            map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780));
-          }
-        );
-      } else {
-        alert('이 브라우저에서는 위치 서비스를 지원하지 않습니다.'); }
-    });
+            // 모든 층의 이미지 사전 로딩 (Pre-loading) 로직
+            Object.keys(FLOOR_DATA).forEach(floorId => {
+                const floor = FLOOR_DATA[floorId];
 
-    searchInput.addEventListener('input', e => {
-      currentSearchTerm = e.target.value;
-      initMap();
-    });
-    filterButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        initMap();
-      });
-    });
-    mobileSearchInput.addEventListener('input', e => {
-      currentSearchTerm = e.target.value;
-      initMap();
-    });
-    document.querySelectorAll('.mobile-sidebar .filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.mobile-sidebar .filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        initMap();
-      });
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
-        const inputs = document.querySelectorAll('input[type="text"], input[type="search"]');
-        inputs.forEach(input => {
-          input.addEventListener('focus', function() {
-            this.style.fontSize = '16px';
-            setTimeout(() => {
-              const keyboardToolbar = document.querySelector('.wk-input-accessory');
-               if (keyboardToolbar) {
-                keyboardToolbar.style.display = 'none';
-              }
-            }, 100);
-          });
-        });
-      }
-    });
-    initMap();
-  });
-</script>
+                const overlay = new google.maps.GroundOverlay(
+                    floor.imageUrl, floor.imageBounds, { opacity: 0.8 }
+                );
+                
+                overlay.setMap(map); 
+                overlay.setMap(null); 
+                
+                floorOverlays[floorId] = overlay;
+            });
+        }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFx8u1rY7G06Ho4y-nYPLQ4RKy4zsW_og&callback=initMap">
+        </script>
 </body>
 </html>
