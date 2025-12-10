@@ -503,6 +503,300 @@ script.onload = function() {
                         address: '서울 종로구 송월길 2',
                         operating_hours: '10:00 - 19:00 (매일 운영)'
                     }
+                },
+         't8': { // 건물 3: 타워8
+                    polygonCoords: [
+                        new naver.maps.LatLng(37.570859, 126.980318),
+                        new naver.maps.LatLng(37.570854, 126.980784),
+                        new naver.maps.LatLng(37.570515, 126.980785),
+                        new naver.maps.LatLng(37.570514, 126.980841),
+                        new naver.maps.LatLng(37.570417, 126.980840),
+                        new naver.maps.LatLng(37.570418, 126.980288),
+                        new naver.maps.LatLng(37.570518, 126.980287),
+                        new naver.maps.LatLng(37.570518, 126.980315),
+                    ],
+                    floors: ['b2', 'b1', '1f'], // 요청하신 층별 버튼 순서
+                    images: {
+                        'b2': 'https://raw.githubusercontent.com/candream99/disabledmap/main/T8/T8_b2.png',
+                        'b1': 'https://raw.githubusercontent.com/candream99/disabledmap/main/T8/T8_b1.png',
+                        '1f': 'https://raw.githubusercontent.com/candream99/disabledmap/main/T8/T8_1.png',
+                    },
+                    // 층별 경계 정보를 객체로 분리하여 저장
+                    floorBounds: { 
+                        // 요청하신 동일한 북동(NE) 및 남서(SW) 좌표를 모든 층에 적용
+                        'b2': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.570405, 126.980209), // SW
+                            new naver.maps.LatLng(37.570902, 126.981077)  // NE
+                        ),
+                        'b1': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.570405, 126.980209), // SW
+                            new naver.maps.LatLng(37.570902, 126.981077)  // NE
+                        ),
+                        '1f': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.570405, 126.980209), // SW
+                            new naver.maps.LatLng(37.570902, 126.981077)  // NE
+                        ),
+                    },
+                    currentFloor: '1f',
+                    polygon: null,
+                    // 임의의 무장애 시설 정보
+                    accessInfo: {
+                        '주출입구 경사로': true,
+                        '장애인 화장실': false, 
+                        '장애인 주차장': true,
+                        '엘리베이터': true,
+                        '주출입구 단차': false 
+                    },
+                    // 건물 상세 정보
+                    buildingInfo: {
+                        name: '타워8',
+                        image_url: 'https://raw.githubusercontent.com/candream99/disabledmap/main/T8/t88.jpg', 
+                        address: '서울 종로구 청진동 167 (임의)',
+                        operating_hours: '08:00 - 22:00 (주말 포함)'
+                    }
+                },
+                'dp': { // 건물 (사용자 요청 추가): 덕수궁 디팰리스
+                    polygonCoords: [
+                        new naver.maps.LatLng(37.568747, 126.971657),
+                        new naver.maps.LatLng(37.568764, 126.971716),
+                        new naver.maps.LatLng(37.568785, 126.971707),
+                        new naver.maps.LatLng(37.568924, 126.972264),
+                        new naver.maps.LatLng(37.568905, 126.972278),
+                        new naver.maps.LatLng(37.568918, 126.972331),
+                        new naver.maps.LatLng(37.568654, 126.972437),
+                        new naver.maps.LatLng(37.568638, 126.972382),
+                        new naver.maps.LatLng(37.568619, 126.972390),
+                        new naver.maps.LatLng(37.568479, 126.971828),
+                        new naver.maps.LatLng(37.568501, 126.971818),
+                        new naver.maps.LatLng(37.568483, 126.971760),
+                    ],
+                    floors: ['1f', 'b1', 'b3'], // 1F, B1, B3 버튼 생성
+                    images: {
+                        '1f': 'https://raw.githubusercontent.com/candream99/disabledmap/main/dp/dp_1.png',
+                        'b1': 'https://raw.githubusercontent.com/candream99/disabledmap/main/dp/dp_2.png',
+                        'b3': 'https://raw.githubusercontent.com/candream99/disabledmap/main/dp/dp_3.png',
+                    },
+                    // 층별 이미지 경계 정보
+                    floorBounds: { 
+                        '1f': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.568384, 126.971603), // 1F SW
+                            new naver.maps.LatLng(37.569001, 126.972464)  // 1F NE
+                        ),
+                        'b1': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.568245, 126.971606), // B1 SW
+                            new naver.maps.LatLng(37.569161, 126.972561)  // B1 NE
+                        ),
+                        'b3': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.568245, 126.971606), // B3 SW
+                            new naver.maps.LatLng(37.569161, 126.972561)  // B3 NE
+                        ),
+                    },
+                    currentFloor: '1f',
+                    polygon: null,
+                    // 임의의 무장애 시설 정보
+                    accessInfo: {
+                        '주출입구 경사로': true,
+                        '장애인 화장실': true,
+                        '장애인 주차장': true,
+                        '엘리베이터': true,
+                        '주출입구 단차': false 
+                    },
+                    // 건물 상세 정보 (검색 리스트 및 팝업용)
+                    buildingInfo: {
+                        name: '덕수궁 디팰리스',
+                        image_url: 'https://raw.githubusercontent.com/candream99/disabledmap/main/dp/dp.png', // 검색 및 팝업 이미지
+                        address: '서울 종로구 사직로 9길 30 (임의 주소)', // 임의 주소
+                        operating_hours: '09:00 - 20:00 (매일 운영)' // 임의 운영시간
+                    }
+                },
+                'officia': { // 건물 4: 광화문 오피시아
+    polygonCoords: [
+        new naver.maps.LatLng(37.569884, 126.974610), // 위도, 경도
+        new naver.maps.LatLng(37.569882, 126.975265),
+        new naver.maps.LatLng(37.569580, 126.975261),
+        new naver.maps.LatLng(37.569581, 126.974603),
+    ],
+    floors: ['b2', 'b1', '1f'], // 요청하신 층: B2, B1, 1F
+    images: {
+        // 모든 층에 동일한 이미지 URL 적용
+        'b2': 'https://raw.githubusercontent.com/candream99/disabledmap/main/officia/officia_b1.png',
+        'b1': 'https://raw.githubusercontent.com/candream99/disabledmap/main/officia/officia_b1.png',
+        '1f': 'https://raw.githubusercontent.com/candream99/disabledmap/main/officia/officia_1f.png',
+    },
+    // 층별 경계 정보 (요청하신 대로 층마다 분리하여 동일한 경계 적용)
+    floorBounds: { 
+        'b2': new naver.maps.LatLngBounds(
+            new naver.maps.LatLng(37.569519, 126.974473), // SW (남서)
+            new naver.maps.LatLng(37.569976, 126.975331)  // NE (북동)
+        ),
+        'b1': new naver.maps.LatLngBounds(
+            new naver.maps.LatLng(37.569519, 126.974473), // SW
+            new naver.maps.LatLng(37.569976, 126.975331)  // NE
+        ),
+        '1f': new naver.maps.LatLngBounds(
+            new naver.maps.LatLng(37.569519, 126.974473), // SW
+            new naver.maps.LatLng(37.569976, 126.975331)  // NE
+        ),
+    },
+    currentFloor: '1f',
+    polygon: null,
+    // 임의의 무장애 시설 정보
+    accessInfo: {
+        '주출입구 경사로': true,
+        '장애인 화장실': true, 
+        '장애인 주차장': false,
+        '엘리베이터': true,
+        '주출입구 단차': false 
+    },
+    // 건물 상세 정보 (검색 리스트 및 팝업용)
+    buildingInfo: {
+        name: '광화문 오피시아',
+        image_url: 'https://raw.githubusercontent.com/candream99/disabledmap/main/officia/officia_.jpg', // I버튼 팝업 및 검색 리스트 이미지
+        address: '서울 종로구 새문안로5길 37 (임의 주소)',
+        operating_hours: '10:00 - 20:00 (주말 휴무, 임의)'
+    }
+},
+                'st': { // 건물 5: S타워
+    polygonCoords: [
+        new naver.maps.LatLng(37.569910, 126.973684), // 위도, 경도
+        new naver.maps.LatLng(37.569904, 126.974217),
+        new naver.maps.LatLng(37.569688, 126.974214),
+        new naver.maps.LatLng(37.569688, 126.973680),
+    ],
+    floors: ['b2', 'b1', '1f'], // 요청하신 층: B2, B1, 1F
+    images: {
+        // 모든 층에 동일한 이미지 URL 적용
+        'b2': 'https://raw.githubusercontent.com/candream99/disabledmap/main/st/st_b1.png',
+        'b1': 'https://raw.githubusercontent.com/candream99/disabledmap/main/st/st_b1.png',
+        '1f': 'https://raw.githubusercontent.com/candream99/disabledmap/main/st/st_1.png',
+    },
+    // 층별 경계 정보 (요청하신 대로 층마다 분리하여 동일한 경계 적용)
+    floorBounds: { 
+        'b2': new naver.maps.LatLngBounds(
+            new naver.maps.LatLng(37.569473, 126.973510), // SW (남서)
+            new naver.maps.LatLng(37.569981, 126.974348)  // NE (북동)
+        ),
+        'b1': new naver.maps.LatLngBounds(
+            new naver.maps.LatLng(37.569473, 126.973510), // SW
+            new naver.maps.LatLng(37.569981, 126.974348)  // NE
+        ),
+        '1f': new naver.maps.LatLngBounds(
+            new naver.maps.LatLng(37.569473, 126.973510), // SW
+            new naver.maps.LatLng(37.569981, 126.974348)  // NE
+        ),
+    },
+    currentFloor: '1f',
+    polygon: null,
+    // 임의의 무장애 시설 정보
+    accessInfo: {
+        '주출입구 경사로': true,
+        '장애인 화장실': true, 
+        '장애인 주차장': true,
+        '엘리베이터': true,
+        '주출입구 단차': false 
+    },
+    // 건물 상세 정보 (검색 리스트 및 팝업용)
+    buildingInfo: {
+        name: 'S타워',
+        image_url: 'https://raw.githubusercontent.com/candream99/disabledmap/main/st/s_t.jpg', // I버튼 팝업 및 검색 리스트 이미지
+        address: '서울 종로구 율곡로 22 (임의 주소)',
+        operating_hours: '평일 09:00 - 18:00 (임의)'
+    }
+},
+                'yp': { // 건물 6: 영풍빌딩 (사용자 요청 추가)
+                    polygonCoords: [
+                        new naver.maps.LatLng(37.569881, 126.981938),
+                        new naver.maps.LatLng(37.569879, 126.982329),
+                        new naver.maps.LatLng(37.569829, 126.982332),
+                        new naver.maps.LatLng(37.569828, 126.982395),
+                        new naver.maps.LatLng(37.569780, 126.982395),
+                        new naver.maps.LatLng(37.569777, 126.982463),
+                        new naver.maps.LatLng(37.569463, 126.982461),
+                        new naver.maps.LatLng(37.569462, 126.982068),
+                        new naver.maps.LatLng(37.569565, 126.981938),
+                    ],
+                    floors: ['b1', '1f'], // 요청하신 층: B1, 1F
+                    images: {
+                        'b1': 'https://raw.githubusercontent.com/candream99/disabledmap/main/yp/yp1.png', // 모든 층 동일 이미지
+                        '1f': 'https://raw.githubusercontent.com/candream99/disabledmap/main/yp/yp1.png',
+                    },
+                    // 층별 경계 정보 (요청하신 동일한 북동(NE) 및 남서(SW) 좌표를 모든 층에 적용)
+                    floorBounds: { 
+                        'b1': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.569438, 126.981870), // SW: 위도: 37.569438, 경도: 126.981870
+                            new naver.maps.LatLng(37.569943, 126.982556)  // NE: 위도: 37.569943, 경도: 126.982556
+                        ),
+                        '1f': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.569438, 126.981870), // SW
+                            new naver.maps.LatLng(37.569943, 126.982556)  // NE
+                        ),
+                    },
+                    currentFloor: '1f',
+                    polygon: null,
+                    // 임의의 무장애 시설 정보
+                    accessInfo: {
+                        '주출입구 경사로': true,
+                        '장애인 화장실': true, 
+                        '장애인 주차장': false, // 임의
+                        '엘리베이터': true,
+                        '주출입구 단차': false 
+                    },
+                    // 건물 상세 정보 (검색 리스트 및 팝업용)
+                    buildingInfo: { 
+                        name: '영풍빌딩', 
+                        image_url: 'https://raw.githubusercontent.com/candream99/disabledmap/main/yp/yp_i.jpg', // I버튼 팝업 및 검색 리스트 이미지
+                        address: '서울 종로구 청계천로 41 (임의 주소)', 
+                        operating_hours: '09:00 - 21:00 (임의)'
+                    }
+                },
+                'sc': { // 건물 6: 영풍빌딩 (사용자 요청 추가)
+                    polygonCoords: [
+                        new naver.maps.LatLng(37.571274, 126.982109),
+                        new naver.maps.LatLng(37.571257, 126.982778),
+                        new naver.maps.LatLng(37.570935, 126.982765),
+                        new naver.maps.LatLng(37.570934, 126.982725),
+                        new naver.maps.LatLng(37.570863, 126.982721),
+                        new naver.maps.LatLng(37.570672, 126.982456),
+                        new naver.maps.LatLng(37.570674, 126.982384),
+                        new naver.maps.LatLng(37.570612, 126.982302),
+                        new naver.maps.LatLng(37.570616, 126.982153),
+new naver.maps.LatLng(37.570712, 126.982050),
+new naver.maps.LatLng(37.570974, 126.982058),
+new naver.maps.LatLng(37.570969, 126.982094),
+                    ],
+                    floors: ['b1', '1f'], // 요청하신 층: B1, 1F
+                    images: {
+                        'b1': 'https://raw.githubusercontent.com/candream99/disabledmap/main/sc/sc_1.png', // 모든 층 동일 이미지
+                        '1f': 'https://raw.githubusercontent.com/candream99/disabledmap/main/sc/sc_1.png',
+                    },
+                    // 층별 경계 정보 (요청하신 동일한 북동(NE) 및 남서(SW) 좌표를 모든 층에 적용)
+                    floorBounds: { 
+                        'b1': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.570605, 126.981884), // SW: 위도: 37.569438, 경도: 126.981870
+                            new naver.maps.LatLng(37.571639, 126.982899)  // NE: 위도: 37.569943, 경도: 126.982556
+                        ),
+                        '1f': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.570605, 126.981884), // SW
+                            new naver.maps.LatLng(37.571639, 126.982899)  // NE
+                        ),
+                    },
+                    currentFloor: '1f',
+                    polygon: null,
+                    // 임의의 무장애 시설 정보
+                    accessInfo: {
+                        '주출입구 경사로': true,
+                        '장애인 화장실': true, 
+                        '장애인 주차장': false, // 임의
+                        '엘리베이터': true,
+                        '주출입구 단차': false 
+                    },
+                    // 건물 상세 정보 (검색 리스트 및 팝업용)
+                    buildingInfo: { 
+                        name: 'SC제일은행', 
+                        image_url: 'https://raw.githubusercontent.com/candream99/disabledmap/main/sc/sc_i.jpg', // I버튼 팝업 및 검색 리스트 이미지
+                        address: '서울 종로구 공평동 100', 
+                        operating_hours: '09:00 - 16:30'
+                    }
                 }
 
         /* --- 이하 다른 모든 빌딩 정보는 동일하게 유지 (생략 없이 모두 넣어야 함) --- */
@@ -598,4 +892,5 @@ document.head.appendChild(script);
 
 </body>
 </html>
+
 
