@@ -480,8 +480,12 @@ script.onload = function() {
                     },
                     // 층별 경계 정보를 객체로 분리하여 저장
                     floorBounds: { 
-                        'b4': dt_default_bounds, // B4: 기존 경계 사용
-                        '1f': dt_default_bounds, // 1F: 기존 경계 사용
+                "b4":new naver.maps.LatLngBounds(
+                    new naver.maps.LatLng(37.570512,126.977632),
+                    new naver.maps.LatLng(37.571415,126.978244)),
+                "1f":new naver.maps.LatLngBounds(
+                    new naver.maps.LatLng(37.570459,126.978649),
+                    new naver.maps.LatLng(37.571626,126.979210)),
                     },
                     currentFloor: '1f',
                     polygon: null,
@@ -594,4 +598,5 @@ document.head.appendChild(script);
 
 </body>
 </html>
+
 
