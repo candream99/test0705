@@ -464,6 +464,42 @@ script.onload = function() {
                 new naver.maps.LatLng(37.570539, 126.977702),
             ]
         },
+        dt: { 
+                    // 건물 2 (예시: 광화문 D타워)
+                    polygonCoords: [
+                        new naver.maps.LatLng(37.571470, 126.978762),
+                        new naver.maps.LatLng(37.571476, 126.979161),
+                        new naver.maps.LatLng(37.570627, 126.979181),
+                        new naver.maps.LatLng(37.570557, 126.979117),
+                        new naver.maps.LatLng(37.570553, 126.978777),
+                    ],
+                    floors: ['b4', '1f'], 
+                    images: {
+                        'b4': 'https://raw.githubusercontent.com/candream99/disabledmap/main/dt/dt_b4.png',
+                        '1f': 'https://raw.githubusercontent.com/candream99/disabledmap/main/dt/dt1.png',
+                    },
+                    // 층별 경계 정보를 객체로 분리하여 저장
+                    floorBounds: { 
+                        'b4': dt_default_bounds, // B4: 기존 경계 사용
+                        '1f': dt_default_bounds, // 1F: 기존 경계 사용
+                    },
+                    currentFloor: '1f',
+                    polygon: null,
+                    accessInfo: {
+                        '주출입구 경사로': false,
+                        '장애인 화장실': true, 
+                        '장애인 주차장': false,
+                        '엘리베이터': true,
+                        '주출입구 단차': true 
+                    },
+                    // 건물 상세 정보
+                    buildingInfo: {
+                        name: '광화문 D타워',
+                        image_url: 'https://raw.githubusercontent.com/candream99/disabledmap/main/dt/d_tower.jpg', 
+                        address: '서울 종로구 송월길 2',
+                        operating_hours: '10:00 - 19:00 (매일 운영)'
+                    }
+                }
 
         /* --- 이하 다른 모든 빌딩 정보는 동일하게 유지 (생략 없이 모두 넣어야 함) --- */
         /*   당신이 제공한 원본 전체 데이터를 그대로 통합합니다.  
@@ -558,3 +594,4 @@ document.head.appendChild(script);
 
 </body>
 </html>
+
