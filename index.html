@@ -797,6 +797,56 @@ new naver.maps.LatLng(37.570969, 126.982094),
                         address: '서울 종로구 공평동 100', 
                         operating_hours: '09:00 - 16:30'
                     }
+                },
+        'ks': { // 한국무역보험공사 (K-SURE)
+                    polygonCoords: [
+                        // 외곽선 좌표 (시계방향: NE-SE-SW-NW와 유사)
+                        new naver.maps.LatLng(37.569913, 126.978610), // 위도: 37.569913, 경도: 126.978610
+                        new naver.maps.LatLng(37.569910, 126.979151), // 위도: 37.569910, 경도: 126.979151
+                        new naver.maps.LatLng(37.569719, 126.979148), // 위도: 37.569719, 경도: 126.979148
+                        new naver.maps.LatLng(37.569722, 126.978609)  // 위도: 37.569722, 경도: 126.978609
+                    ],
+                    floors: ['b2', 'b1', '1f'], 
+                    images: {
+                        'b2': 'https://raw.githubusercontent.com/candream99/disabledmap/main/ks/ks_b12.png',
+                        'b1': 'https://raw.githubusercontent.com/candream99/disabledmap/main/ks/ks_b11.png',
+                        '1f': 'https://raw.githubusercontent.com/candream99/disabledmap/main/ks/ks_1.png',
+                    },
+                    // 층별 이미지 경계 정보 (LatLngBounds: SW, NE 순서)
+                    floorBounds: { 
+                        // B2 이미지 경계 (B2, B1은 동일)
+                        'b2': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.569583, 126.978495), // SW: 위도: 37.569583, 경도: 126.978495
+                            new naver.maps.LatLng(37.570013, 126.979220)  // NE: 위도: 37.570013, 경도: 126.979220
+                        ),
+                        // B1 이미지 경계
+                        'b1': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.569583, 126.978495), // SW
+                            new naver.maps.LatLng(37.570013, 126.979220)  // NE
+                        ),
+                        // 1F 이미지 경계
+                        '1f': new naver.maps.LatLngBounds( 
+                            new naver.maps.LatLng(37.569618, 126.978522), // SW: 위도: 37.569618, 경도: 126.978522
+                            new naver.maps.LatLng(37.570012, 126.979214)  // NE: 위도: 37.570012, 경도: 126.979214
+                        ),
+                    },
+                    currentFloor: '1f',
+                    polygon: null,
+                    // 무장애 시설 정보 (요청에 따라 임의의 값 설정)
+                    accessInfo: {
+                        '주출입구 경사로': true,
+                        '장애인 화장실': true, 
+                        '장애인 주차장': true,
+                        '엘리베이터': true,
+                        '주출입구 단차': false 
+                    },
+                    // 건물 상세 정보 (검색 리스트 및 팝업용)
+                    buildingInfo: {
+                        name: '한국무역보험공사',
+                        image_url: 'https://raw.githubusercontent.com/candream99/disabledmap/main/ks/ks.jpg', 
+                        address: '서울특별시 종로구 종로 14',
+                        operating_hours: '오전9시부터 오후 6시까지'
+                    }
                 }
 
         /* --- 이하 다른 모든 빌딩 정보는 동일하게 유지 (생략 없이 모두 넣어야 함) --- */
@@ -892,4 +942,5 @@ document.head.appendChild(script);
 
 </body>
 </html>
+
 
